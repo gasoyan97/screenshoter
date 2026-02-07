@@ -55,7 +55,7 @@ jobs:
       - name: Build (with signing)
         if: env.SIGNING_ENABLED == 'true'
         run: |
-          xcodebuild -scheme ScreenShoter -configuration Release \
+          xcodebuild -project ScreenShoter.xcodeproj -scheme ScreenShoter -configuration Release \
             -archivePath build/ScreenShoter.xcarchive \
             CODE_SIGN_IDENTITY="Developer ID Application" \
             archive
@@ -67,7 +67,7 @@ jobs:
       - name: Build (without signing)
         if: env.SIGNING_ENABLED == 'false'
         run: |
-          xcodebuild -scheme ScreenShoter -configuration Release \
+          xcodebuild -project ScreenShoter.xcodeproj -scheme ScreenShoter -configuration Release \
             -derivedDataPath build/DerivedData \
             CODE_SIGN_IDENTITY="-" \
             build

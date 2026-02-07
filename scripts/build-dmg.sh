@@ -12,7 +12,7 @@ cd "$(dirname "$0")/.."
 VERSION="${1:-$(plutil -extract CFBundleShortVersionString raw ScreenShoter/Info.plist)}"
 echo "Сборка ScreenShoter $VERSION..."
 
-xcodebuild -scheme ScreenShoter -configuration Release \
+xcodebuild -project ScreenShoter.xcodeproj -scheme ScreenShoter -configuration Release \
   -derivedDataPath build/DerivedData \
   CODE_SIGN_IDENTITY="-" \
   build
