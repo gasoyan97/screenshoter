@@ -20,6 +20,11 @@ name: Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v0.0.5)'
+        required: true
 
 jobs:
   appcast:
@@ -35,7 +40,10 @@ jobs:
 
       - name: Download release assets
         run: |
-          gh release download "${{ github.event.release.tag_name }}" -D updates -A '*.zip' -A '*.dmg' -A '*.tar.xz' || true
+          TAG="${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.event.release.tag_name }}"
+          echo "Using tag: $TAG"
+          gh release download "$TAG" -D updates -A '*.zip' -A '*.dmg' -A '*.tar.xz' || true
+          echo "tag=$TAG" >> $GITHUB_ENV
           ls -la updates/
 
       - name: Setup Sparkle tools
@@ -49,7 +57,7 @@ jobs:
         env:
           SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
         run: |
-          BASE_URL="https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}"
+          BASE_URL="https://github.com/${{ github.repository }}/releases/download/${{ env.tag }}"
           mkdir -p pages
           if [ -z "$SPARKLE_PRIVATE_KEY" ] || [ "$SPARKLE_PRIVATE_KEY" = "" ]; then
             echo "::warning::SPARKLE_PRIVATE_KEY not set. Add it as repo secret for signed appcast."
