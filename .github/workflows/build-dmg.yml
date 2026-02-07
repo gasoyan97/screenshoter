@@ -75,6 +75,8 @@ jobs:
           APP=build/DerivedData/Build/Products/Release/ScreenShoter.app
           [ -d "$APP" ] || APP=$(find build/DerivedData -name "ScreenShoter.app" -type d | head -1)
           cp -R "$APP" build/export/
+          # Переподпись всего бандла ad-hoc (Sparkle иначе имеет другой Team ID и не запускается)
+          codesign --force --deep --sign - build/export/ScreenShoter.app
 
       - name: Create DMG
         run: |

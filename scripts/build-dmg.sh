@@ -23,6 +23,8 @@ if [ ! -d "$APP_PATH" ]; then
   APP_PATH=$(find build/DerivedData -name "ScreenShoter.app" -type d | head -1)
 fi
 cp -R "$APP_PATH" build/export/
+# Переподпись ad-hoc — иначе Sparkle (другой Team ID) не загрузится
+codesign --force --deep --sign - build/export/ScreenShoter.app
 
 # DMG
 DMG_NAME="ScreenShoter-$VERSION.dmg"
