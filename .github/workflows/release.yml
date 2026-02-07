@@ -53,7 +53,7 @@ jobs:
           SPARKLE_VERSION="2.8.1"
           curl -sL "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" -o sparkle.tar.xz
           tar xf sparkle.tar.xz
-          ./Sparkle/bin/generate_appcast --help || true
+          ./bin/generate_appcast --help || true
 
       - name: Generate appcast
         env:
@@ -67,9 +67,9 @@ jobs:
           else
             echo "$SPARKLE_PRIVATE_KEY" | tr -d '\n' | base64 -d > private_key.pem
             chmod 600 private_key.pem
-            ./Sparkle/bin/generate_appcast -s private_key.pem --link "$BASE_URL/" updates/ || \
-            ./Sparkle/bin/generate_appcast -s private_key.pem --no-deltas --link "$BASE_URL/" updates/ || \
-            ./Sparkle/bin/generate_appcast -s private_key.pem updates/
+            ./bin/generate_appcast -s private_key.pem --link "$BASE_URL/" updates/ || \
+            ./bin/generate_appcast -s private_key.pem --no-deltas --link "$BASE_URL/" updates/ || \
+            ./bin/generate_appcast -s private_key.pem updates/
             mv updates/appcast.xml pages/appcast.xml 2>/dev/null || cp docs/appcast.xml.example pages/appcast.xml
           fi
           cat pages/appcast.xml
