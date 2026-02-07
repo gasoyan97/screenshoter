@@ -31,7 +31,14 @@ Credentials для Яндекс.Диска берутся из Secrets.xcconfig 
 - **YANDEX_CLIENT_ID** — Client ID из oauth.yandex.ru
 - **YANDEX_CLIENT_SECRET** — Client Secret
 
-Workflow `build-dmg.yml` передаёт их в xcodebuild; скрипт генерирует credentials без Secrets.xcconfig.
+**Быстро (если есть локальный Secrets.xcconfig):**
+```bash
+./scripts/add-yandex-secrets-to-github.sh
+```
+
+**Вручную:** Settings → Secrets and variables → Actions → New repository secret.
+
+Workflow `build-dmg.yml` создаёт `Secrets.xcconfig` из этих секретов перед сборкой — credentials попадут в собранное приложение.
 
 ## Без credentials
 
