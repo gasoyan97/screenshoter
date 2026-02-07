@@ -70,7 +70,7 @@ struct HistoryView: View {
                                 .foregroundStyle(.secondary)
                         }
                     }
-                    .listRowBackground(Color.primary.opacity(0.03))
+                    .listRowBackground(Color.primary.opacity(0.02))
                     .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
                 }
                 .listStyle(.plain)
@@ -78,7 +78,7 @@ struct HistoryView: View {
             }
         }
         .padding(24)
-        .background(.ultraThinMaterial)
+        .background(.windowBackground)
         .onAppear {
             records = UploadHistory.shared.list()
         }
@@ -113,15 +113,15 @@ private struct HistoryThumbnailRow: View {
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                     } else {
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(Color.primary.opacity(0.08))
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .fill(Color.primary.opacity(0.06))
                             .overlay {
                                 ProgressView()
                             }
                     }
                 }
                 .frame(width: thumbnailSize, height: thumbnailSize)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
                 Text(record.fileName)
                     .font(.caption2)

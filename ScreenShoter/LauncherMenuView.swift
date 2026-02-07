@@ -9,19 +9,19 @@ struct LauncherMenuView: View {
         let _ = { AppState.current = appState }()
         VStack(spacing: 0) {
             Text("app.name")
-                .font(.system(size: 15, weight: .semibold))
+                .font(.headline)
                 .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 10)
+                .padding(.horizontal, 16)
+                .padding(.top, 12)
+                .padding(.bottom, 8)
 
             if appState.trayUploadStatus != .idle {
                 trayStatusBlock(appState: appState)
             }
 
             Divider()
-                .opacity(0.5)
+                .opacity(0.4)
                 .padding(.horizontal, 12)
 
             VStack(spacing: 4) {
@@ -36,18 +36,18 @@ struct LauncherMenuView: View {
                 } label: { Text("menu.capture.scroll").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
 
             Divider()
-                .opacity(0.5)
+                .opacity(0.4)
                 .padding(.horizontal, 12)
 
             Text("menu.with_timer")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 16)
                 .padding(.top, 4)
             VStack(spacing: 4) {
                 Button { capture(.full, delaySeconds: 3) } label: { Text("menu.capture.full.3s").frame(maxWidth: .infinity, alignment: .leading) }
@@ -57,12 +57,12 @@ struct LauncherMenuView: View {
                 Button { capture(.full, delaySeconds: 10) } label: { Text("menu.capture.full.10s").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .padding(.bottom, 4)
 
             Divider()
-                .opacity(0.5)
+                .opacity(0.4)
                 .padding(.horizontal, 12)
 
             VStack(spacing: 4) {
@@ -70,19 +70,19 @@ struct LauncherMenuView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 16)
                     .padding(.top, 4)
                 Button {
                     Task { @MainActor in RecordingStubService.showStub() }
                 } label: { Text("menu.record_screen").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .padding(.bottom, 4)
 
             Divider()
-                .opacity(0.5)
+                .opacity(0.4)
                 .padding(.horizontal, 12)
 
             VStack(spacing: 4) {
@@ -107,17 +107,13 @@ struct LauncherMenuView: View {
                 Button { NSApplication.shared.terminate(nil) } label: { Text("menu.quit").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .padding(.bottom, 16)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .padding(.bottom, 12)
         }
         .frame(width: 240)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(.white.opacity(0.2), lineWidth: 0.5)
-        )
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .onAppear {
             if !hasCheckedSetup {
                 hasCheckedSetup = true
@@ -149,8 +145,8 @@ struct LauncherMenuView: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.primary.opacity(0.05))
             case .success(let fileName, _):
@@ -162,8 +158,8 @@ struct LauncherMenuView: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.primary.opacity(0.05))
                 .onTapGesture { appState.trayUploadStatus = .idle }
@@ -176,8 +172,8 @@ struct LauncherMenuView: View {
                         .foregroundStyle(.red)
                         .lineLimit(2)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.red.opacity(0.08))
                 .onTapGesture { appState.trayUploadStatus = .idle }

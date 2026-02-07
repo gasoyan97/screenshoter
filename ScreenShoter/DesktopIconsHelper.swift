@@ -42,10 +42,10 @@ enum DesktopIconsHelper {
     }
 
     /// Скрыть иконки перед съёмкой, затем вернуть прежнее состояние. Вызвать beforeCapture перед capture, afterCapture после.
-    static func beforeCapture() -> Bool {
+    static func beforeCapture() async -> Bool {
         guard areIconsVisible() else { return false }
         setIconsVisible(false)
-        Thread.sleep(forTimeInterval: 0.8)
+        try? await Task.sleep(nanoseconds: 800_000_000)
         return true
     }
 

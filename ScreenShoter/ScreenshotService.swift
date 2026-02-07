@@ -25,7 +25,7 @@ final class ScreenshotService {
 
         var restoreDesktopIcons = false
         if AppSettings.hideDesktopIconsBeforeCapture, mode == .full || mode == .region {
-            restoreDesktopIcons = DesktopIconsHelper.beforeCapture()
+            restoreDesktopIcons = await DesktopIconsHelper.beforeCapture()
         }
 
         defer {

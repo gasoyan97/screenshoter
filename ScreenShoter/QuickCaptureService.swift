@@ -69,7 +69,7 @@ final class QuickCaptureService {
         } catch {
             NSApp.activate(ignoringOtherApps: true)
             let alert = NSAlert()
-            alert.messageText = "Ошибка сохранения"
+            alert.messageText = String(localized: "error.save_failed")
             alert.informativeText = error.localizedDescription
             alert.alertStyle = .critical
             alert.runModal()

@@ -182,6 +182,7 @@
 
 /* WebDAV errors */
 "error.invalid_url" = "Неверный или неподдерживаемый адрес. Проверьте URL в настройках (должен начинаться с https://).";
+"error.save_failed" = "Ошибка сохранения";
 
 /* Stubs (feature in development) */
 "stub.ok" = "OK";

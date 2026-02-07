@@ -38,6 +38,8 @@ Workflow создаст ветку `release/0.0.5` от тега и соберё
 | `APPLE_ID` | Apple ID (email) |
 | `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password |
 | `TEAM_ID` | Team ID (10 символов) |
+| `YANDEX_CLIENT_ID` | OAuth Client ID (Яндекс.Диск) для загрузки скриншотов |
+| `YANDEX_CLIENT_SECRET` | OAuth Client Secret (Яндекс.Диск) |
 
 ### Экспорт сертификата
 

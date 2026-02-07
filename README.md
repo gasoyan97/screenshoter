@@ -22,3 +22,7 @@
 ## Технологии
 
 Swift · SwiftUI · WebDAV · Sparkle
+
+## Разработка
+
+Для работы загрузки в Яндекс.Диск нужны OAuth credentials. Локально: скопируйте `ScreenShoter/Secrets.xcconfig.example` в `ScreenShoter/Secrets.xcconfig` и заполните Client ID/Secret. Подробнее: [docs/OAUTH_SETUP.md](docs/OAUTH_SETUP.md)

@@ -1,11 +1,10 @@
 import Foundation
 
-/// Конфиг OAuth для Яндекс.Диска (REST API). Заполняет только разработчик при сборке приложения.
+/// Конфиг OAuth для Яндекс.Диска (REST API). Credentials из YandexOAuthSecrets (генерируется скриптом из Secrets.xcconfig или env).
 /// Redirect URI на oauth.yandex.ru нельзя менять — используем поток с кодом: пользователь копирует код со страницы, вставляет в приложение, мы обмениваем код на токен.
 enum YandexOAuthConfig {
-    static let builtInClientID = "9f50948fd9874f4d89046f873ddee3a1"
-    /// Client secret приложения (oauth.yandex.ru → ваше приложение). Нужен для обмена кода на токен.
-    static let builtInClientSecret = "348d9798ffb14c0db37144abcea38685"
+    static var builtInClientID: String { YandexOAuthSecrets.clientID }
+    static var builtInClientSecret: String { YandexOAuthSecrets.clientSecret }
 
     /// Права для API Яндекс.Диска. Должны совпадать с «Запрашиваемые права» в консоли приложения (oauth.yandex.com).
     /// Только те, что включены у приложения: иначе invalid_scope.

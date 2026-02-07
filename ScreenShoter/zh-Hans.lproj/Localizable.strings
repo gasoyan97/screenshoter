@@ -182,6 +182,7 @@
 
 /* WebDAV errors */
 "error.invalid_url" = "无效或不支持的 URL。请在设置中检查 URL（必须以 https:// 开头）。";
+"error.save_failed" = "保存失败";
 
 /* Stubs (feature in development) */
 "stub.ok" = "确定";

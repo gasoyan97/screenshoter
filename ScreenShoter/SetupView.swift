@@ -41,7 +41,7 @@ struct SetupView: View {
             bottomBar
         }
         .frame(width: 520, height: 520)
-        .background(.ultraThinMaterial)
+        .background(.windowBackground)
     }
 
     private var stepIndicator: some View {
@@ -117,8 +117,8 @@ struct SetupView: View {
                 }
             }
             .padding(12)
-            .background(.quaternary.opacity(0.5))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .background(.quaternary.opacity(0.4))
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             // Запись экрана
             VStack(alignment: .leading, spacing: 8) {
@@ -140,8 +140,8 @@ struct SetupView: View {
                 .buttonStyle(.bordered)
             }
             .padding(12)
-            .background(.quaternary.opacity(0.5))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .background(.quaternary.opacity(0.4))
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             Spacer()
         }
@@ -256,8 +256,8 @@ struct SetupView: View {
                 }
             }
             .padding(12)
-            .background(.quaternary.opacity(0.5))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .background(.quaternary.opacity(0.4))
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             Spacer()
         }
@@ -349,6 +349,6 @@ struct SetupView: View {
 
     private func closeSetup() {
         UserDefaults.standard.set(true, forKey: "hasCheckedSetup")
-        NSApp.windows.first(where: { $0.title.contains(String(localized: "window.setup")) })?.close()
+        WindowDockHelper.window(for: .setup)?.close()
     }
 }

@@ -15,11 +15,7 @@ struct QuickOverlayView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: thumbnailSize, height: thumbnailSize)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .strokeBorder(Color.primary.opacity(0.15), lineWidth: 1)
-                )
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             VStack(alignment: .leading, spacing: 10) {
                 Button {
@@ -69,31 +65,12 @@ struct QuickOverlayView: View {
             .frame(width: 180)
         }
         .padding(20)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .strokeBorder(.white.opacity(0.2), lineWidth: 0.5)
-        )
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
     private func closeOverlay() {
-        NSApp.windows.first(where: { $0.title.contains(String(localized: "window.quick_overlay")) })?.close()
-        updateDockVisibilityAfterClose()
-    }
-}
-
-private func updateDockVisibilityAfterClose() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-        let mainTitles = [
-            String(localized: "window.annotations"),
-            String(localized: "window.setup"),
-            String(localized: "window.history"),
-            String(localized: "window.settings")
-        ]
-        let hasWindow = NSApp.windows.contains { w in
-            w.isVisible && mainTitles.contains(where: { w.title.contains($0) })
-        }
-        NSApp.setActivationPolicy(hasWindow ? .regular : .accessory)
+        WindowDockHelper.window(for: .quickOverlay)?.close()
+        WindowDockHelper.updateDockVisibilityAfterClose()
     }
 }

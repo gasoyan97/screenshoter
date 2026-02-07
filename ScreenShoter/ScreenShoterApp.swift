@@ -1,26 +1,6 @@
 import SwiftUI
 import AppKit
 
-/// Иконка в Dock только когда открыто окно приложения (аннотации, настройки, установка, история). Без окон — только меню в баре.
-private func updateDockVisibility() {
-    let mainTitles = [
-        String(localized: "window.annotations"),
-        String(localized: "window.setup"),
-        String(localized: "window.history"),
-        String(localized: "window.settings"),
-        String(localized: "window.quick_overlay")
-    ]
-    let hasWindow = NSApp.windows.contains { w in
-        w.isVisible && mainTitles.contains(where: { w.title.contains($0) })
-    }
-    NSApp.setActivationPolicy(hasWindow ? .regular : .accessory)
-}
-
-/// Вызывать после закрытия окна: проверка с небольшой задержкой, чтобы окно успело исчезнуть из списка.
-private func updateDockVisibilityAfterClose() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { updateDockVisibility() }
-}
-
 @main
 struct ScreenShoterApp: App {
     @StateObject private var appState = AppState()
@@ -43,14 +23,14 @@ struct ScreenShoterApp: App {
                     .id(appState.annotationImageId)
                     .onAppear {
                         DispatchQueue.main.async {
-                            if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.annotations")) }) {
+                            if let window = WindowDockHelper.findAndConfigure(id: .annotation, titleContains: String(localized: "window.annotations")) {
                                 window.level = .normal
                                 window.collectionBehavior = [.managed, .participatesInCycle]
                             }
-                            updateDockVisibility()
+                            WindowDockHelper.updateDockVisibility()
                         }
                     }
-                    .onDisappear { updateDockVisibilityAfterClose() }
+                    .onDisappear { WindowDockHelper.updateDockVisibilityAfterClose() }
             }
         }
         .windowStyle(.hiddenTitleBar)
@@ -62,15 +42,15 @@ struct ScreenShoterApp: App {
                 QuickOverlayView(image: image, appState: appState)
                     .onAppear {
                         DispatchQueue.main.async {
-                            if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.quick_overlay")) }) {
+                            if let window = WindowDockHelper.findAndConfigure(id: .quickOverlay, titleContains: String(localized: "window.quick_overlay")) {
                                 window.level = .floating
                                 window.collectionBehavior = [.managed, .participatesInCycle]
                                 window.isMovableByWindowBackground = true
                             }
-                            updateDockVisibility()
+                            WindowDockHelper.updateDockVisibility()
                         }
                     }
-                    .onDisappear { updateDockVisibilityAfterClose() }
+                    .onDisappear { WindowDockHelper.updateDockVisibilityAfterClose() }
             }
         }
         .windowStyle(.hiddenTitleBar)
@@ -82,15 +62,15 @@ struct ScreenShoterApp: App {
             SetupView()
                 .onAppear {
                     DispatchQueue.main.async {
-                            if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.setup")) }) {
+                        if let window = WindowDockHelper.findAndConfigure(id: .setup, titleContains: String(localized: "window.setup")) {
                             window.level = .floating
                             window.collectionBehavior = [.managed, .participatesInCycle]
                             window.isMovableByWindowBackground = true
                         }
-                        updateDockVisibility()
+                        WindowDockHelper.updateDockVisibility()
                     }
                 }
-                .onDisappear { updateDockVisibilityAfterClose() }
+                .onDisappear { WindowDockHelper.updateDockVisibilityAfterClose() }
         }
         .windowResizability(.contentSize)
         .defaultSize(width: 520, height: 520)
@@ -99,15 +79,15 @@ struct ScreenShoterApp: App {
             HistoryView()
                 .onAppear {
                     DispatchQueue.main.async {
-                        if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.history")) }) {
+                        if let window = WindowDockHelper.findAndConfigure(id: .history, titleContains: String(localized: "window.history")) {
                             window.level = .normal
                             window.collectionBehavior = [.managed, .participatesInCycle]
                             window.isMovableByWindowBackground = true
                         }
-                        updateDockVisibility()
+                        WindowDockHelper.updateDockVisibility()
                     }
                 }
-                .onDisappear { updateDockVisibilityAfterClose() }
+                .onDisappear { WindowDockHelper.updateDockVisibilityAfterClose() }
         }
         .windowResizability(.contentSize)
         .defaultSize(width: 600, height: 500)
@@ -116,15 +96,15 @@ struct ScreenShoterApp: App {
             SettingsView()
                 .onAppear {
                     DispatchQueue.main.async {
-                        if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.settings")) }) {
+                        if let window = WindowDockHelper.findAndConfigure(id: .settings, titleContains: String(localized: "window.settings")) {
                             window.level = .normal
                             window.collectionBehavior = [.managed, .participatesInCycle]
                             window.isMovableByWindowBackground = true
                         }
-                        updateDockVisibility()
+                        WindowDockHelper.updateDockVisibility()
                     }
                 }
-                .onDisappear { updateDockVisibilityAfterClose() }
+                .onDisappear { WindowDockHelper.updateDockVisibilityAfterClose() }
         }
         .windowResizability(.contentSize)
         .defaultSize(width: 460, height: 700)

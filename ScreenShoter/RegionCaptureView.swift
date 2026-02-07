@@ -1,7 +1,7 @@
 import SwiftUI
 import AppKit
 
-/// Полноэкранный оверлей с прицелом по центру и выделением области мышью. По отпусканию возвращает выбранный rect в координатах экрана (origin bottom-left).
+/// Полноэкранный оверлей с прицелом по центру и выделением области мышью. Возвращает rect в координатах SwiftUI (origin top-left).
 struct RegionCaptureView: View {
     let onCancel: () -> Void
     let onSelect: (CGRect) -> Void
@@ -91,13 +91,24 @@ private final class RegionContinuationHolder {
     var resumed = false
 }
 
-/// Помощник: показать окно выбора области и вернуть rect в координатах экрана (top-left для screencapture -R) или nil при отмене.
+/// Конвертирует rect из координат SwiftUI (origin top-left) в Quartz/screencapture -R (origin bottom-left).
+private func rectForScreencapture(_ rect: CGRect, screenHeight: CGFloat) -> CGRect {
+    CGRect(
+        x: rect.origin.x,
+        y: screenHeight - rect.origin.y - rect.height,
+        width: rect.width,
+        height: rect.height
+    )
+}
+
+/// Помощник: показать окно выбора области и вернуть rect в координатах Quartz (для screencapture -R) или nil при отмене.
 func showRegionSelector() async -> CGRect? {
     await withCheckedContinuation { continuation in
         DispatchQueue.main.async {
             let holder = RegionContinuationHolder()
+            let screenFrame = NSScreen.main?.frame ?? .zero
             let window = NSWindow(
-                contentRect: NSScreen.main?.frame ?? .zero,
+                contentRect: screenFrame,
                 styleMask: .borderless,
                 backing: .buffered,
                 defer: false
@@ -108,7 +119,6 @@ func showRegionSelector() async -> CGRect? {
             window.ignoresMouseEvents = false
             window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
 
-            let screenFrame = NSScreen.main?.frame ?? .zero
             let contentView = NSHostingView(rootView: RegionCaptureView(
                 onCancel: {
                     window.close()
@@ -116,7 +126,8 @@ func showRegionSelector() async -> CGRect? {
                 },
                 onSelect: { rect in
                     window.close()
-                    if !holder.resumed { holder.resumed = true; continuation.resume(returning: rect) }
+                    let quartzRect = rectForScreencapture(rect, screenHeight: screenFrame.height)
+                    if !holder.resumed { holder.resumed = true; continuation.resume(returning: quartzRect) }
                 }
             ))
             contentView.frame = NSRect(origin: .zero, size: screenFrame.size)

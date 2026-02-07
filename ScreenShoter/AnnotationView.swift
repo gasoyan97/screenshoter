@@ -57,72 +57,47 @@ struct AnnotationView: View {
             VStack(spacing: 0) {
                 toolbar
                 Divider()
-                    .opacity(0.6)
+                    .opacity(0.5)
                 imageView
             }
-            .background(.ultraThinMaterial)
+            .background(.windowBackground)
         }
     }
 
     private var toolbar: some View {
-        HStack(spacing: 16) {
-            HStack(spacing: 6) {
+        HStack(spacing: 12) {
+            Picker("", selection: $currentTool) {
                 ForEach([DrawingItem.DrawingType.arrow, .highlight, .blur], id: \.hashValue) { type in
-                    Button {
-                        currentTool = type
-                    } label: {
-                        Image(systemName: toolIcon(for: type))
-                            .font(.system(size: 14, weight: .medium))
-                            .frame(width: 36, height: 36)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(currentTool == type ? Color.accentColor.opacity(0.9) : Color.primary.opacity(0.05))
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .strokeBorder(currentTool == type ? Color.accentColor : Color.primary.opacity(0.1), lineWidth: 0.5)
-                            )
-                    }
-                    .buttonStyle(.plain)
+                    Image(systemName: toolIcon(for: type)).tag(type)
                 }
             }
+            .pickerStyle(.segmented)
+            .labelsHidden()
 
-            Rectangle()
-                .fill(Color.primary.opacity(0.15))
-                .frame(width: 1, height: 24)
+            Divider()
+                .frame(height: 20)
 
             if currentTool != .blur {
-                HStack(spacing: 6) {
+                HStack(spacing: 8) {
                     ForEach(Array(colors.enumerated()), id: \.offset) { _, color in
                         Circle()
                             .fill(color)
-                            .frame(width: 26, height: 26)
-                            .overlay(
-                                Circle()
-                                    .strokeBorder(Color.white.opacity(0.9), lineWidth: currentColor == color ? 2.5 : 0)
-                            )
-                            .overlay(
-                                Circle()
-                                    .strokeBorder(Color.primary.opacity(0.2), lineWidth: 1)
-                            )
+                            .frame(width: 24, height: 24)
+                            .overlay(Circle().strokeBorder(Color.white.opacity(0.8), lineWidth: currentColor == color ? 2 : 0))
+                            .overlay(Circle().strokeBorder(Color.primary.opacity(0.15), lineWidth: 1))
                             .onTapGesture { currentColor = color }
                     }
                 }
-
                 Slider(value: $lineWidth, in: 2...12, step: 1)
-                    .frame(width: 90)
+                    .frame(width: 80)
             }
 
             Button {
                 if !drawings.isEmpty { drawings.removeLast() }
             } label: {
                 Image(systemName: "arrow.uturn.backward")
-                    .font(.system(size: 14, weight: .medium))
-                    .frame(width: 36, height: 36)
-                    .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.primary.opacity(0.05)))
-                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(Color.primary.opacity(0.1), lineWidth: 0.5))
             }
-            .buttonStyle(.plain)
+            .buttonStyle(.borderless)
             .disabled(drawings.isEmpty)
 
             Spacer()
@@ -130,11 +105,8 @@ struct AnnotationView: View {
             Toggle("annotation.upload_after_save", isOn: $uploadToWebDAV)
                 .toggleStyle(.checkbox)
 
-            Button {
-                copyToClipboard()
-            } label: {
+            Button { copyToClipboard() } label: {
                 Image(systemName: "doc.on.clipboard")
-                    .font(.system(size: 14, weight: .medium))
             }
             .buttonStyle(.bordered)
             .help("annotation.copy")
@@ -154,27 +126,22 @@ struct AnnotationView: View {
                 }
             } label: {
                 Image(systemName: "text.viewfinder")
-                    .font(.system(size: 14, weight: .medium))
             }
             .buttonStyle(.bordered)
             .help("annotation.ocr")
 
-            Button {
-                togglePin()
-            } label: {
+            Button { togglePin() } label: {
                 Image(systemName: isPinned ? "pin.slash" : "pin")
-                    .font(.system(size: 14, weight: .medium))
             }
             .buttonStyle(.bordered)
             .help(isPinned ? String(localized: "annotation.unpin") : String(localized: "annotation.pin"))
 
             Button("annotation.save") { save() }
                 .buttonStyle(.borderedProminent)
-                .controlSize(.large)
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 14)
-        .background(.ultraThinMaterial)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(.regularMaterial)
     }
 
     private var imageView: some View {
@@ -204,12 +171,12 @@ struct AnnotationView: View {
                     .frame(width: viewSize.width, height: viewSize.height)
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .strokeBorder(Color.primary.opacity(0.08), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .strokeBorder(Color.primary.opacity(0.06), lineWidth: 1)
                 )
-                .shadow(color: .black.opacity(0.12), radius: 24, x: 0, y: 8)
+                .shadow(color: .black.opacity(0.08), radius: 16, x: 0, y: 4)
                 .padding(20)
                 .overlay(
                     Canvas { ctx, _ in
@@ -557,12 +524,12 @@ struct AnnotationView: View {
 
     private func closeAnnotationWindow() {
         DispatchQueue.main.async {
-            NSApp.windows.first(where: { $0.title.contains(String(localized: "window.annotations")) })?.close()
+            WindowDockHelper.window(for: .annotation)?.close()
         }
     }
 
     private func togglePin() {
-        guard let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.annotations")) }) else { return }
+        guard let window = WindowDockHelper.window(for: .annotation) else { return }
         isPinned.toggle()
         if isPinned {
             window.level = .floating

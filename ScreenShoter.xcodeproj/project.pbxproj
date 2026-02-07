@@ -39,9 +39,11 @@
 		SCR3C01A2B3C4D5E6F70829 /* ScreenRecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SCR3C02B3C4D5E6F7082930 /* ScreenRecordingService.swift */; };
 		SPKUP01A2B3C4D5E6F70829 /* SparkleUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */; };
 		W4LL01A2B3C4D5E6F708293 /* WallpaperPresetHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */; };
+		WNDCK01A2B3C4D5E6F70829 /* WindowDockHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = WNDCK02B3C4D5E6F7082930 /* WindowDockHelper.swift */; };
 		Y4ND3X01A2B3C4D5E6F70829 /* YandexPreviewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */; };
 		Y4ND3X01A2B3C4D5E6F7082A /* YandexOAuthConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */; };
 		Y4ND3X01A2B3C4D5E6F7082B /* YandexOAuthCallbackServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */; };
+		Y4ND3X01A2B3C4D5E6F7082C /* YandexOAuthSecrets.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082933 /* YandexOAuthSecrets.generated.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,9 +83,11 @@
 		SCR3C02B3C4D5E6F7082930 /* ScreenRecordingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecordingService.swift; sourceTree = "<group>"; };
 		SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleUpdater.swift; sourceTree = "<group>"; };
 		W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperPresetHelper.swift; sourceTree = "<group>"; };
+		WNDCK02B3C4D5E6F7082930 /* WindowDockHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDockHelper.swift; sourceTree = "<group>"; };
 		Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexPreviewLoader.swift; sourceTree = "<group>"; };
 		Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexOAuthConfig.swift; sourceTree = "<group>"; };
 		Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexOAuthCallbackServer.swift; sourceTree = "<group>"; };
+		Y4ND3X02B3C4D5E6F7082933 /* YandexOAuthSecrets.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexOAuthSecrets.generated.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,9 +138,11 @@
 				D4E5F60718293A4B5C6D7E8F /* UploadHistory.swift */,
 				0718293A4B5C6D7E8F901234 /* WebDAVUploader.swift */,
 				W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */,
+				WNDCK02B3C4D5E6F7082930 /* WindowDockHelper.swift */,
 				Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */,
 				Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */,
 				Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */,
+				Y4ND3X02B3C4D5E6F7082933 /* YandexOAuthSecrets.generated.swift */,
 			);
 			path = ScreenShoter;
 			sourceTree = "<group>";
@@ -170,10 +176,31 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		OAUTHSE01A2B3C4D5E6F70829 /* Generate OAuth Secrets */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate OAuth Secrets";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/ScreenShoter/YandexOAuthSecrets.generated.swift",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "\"${SRCROOT}/scripts/generate-oauth-secrets.sh\"\n";
+		};
 		FB6BD79DB10E92EEB929FE4E /* ScreenShoter */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A78D0812CA77F06E45F6661 /* Build configuration list for PBXNativeTarget "ScreenShoter" */;
 			buildPhases = (
+				OAUTHSE01A2B3C4D5E6F70829 /* Generate OAuth Secrets */,
 				F29A5268D84B4F585EB269E9 /* Sources */,
 				BBF5B602F8772909054DEDC3 /* Resources */,
 				F4D5E6F70829304B5C6D7E8F /* Frameworks */,
@@ -266,9 +293,11 @@
 				A3B4C5D6E7F8093A415C6D7E /* UploadHistory.swift in Sources */,
 				A6B7C8D9EA0B6D748F90123 /* WebDAVUploader.swift in Sources */,
 				W4LL01A2B3C4D5E6F708293 /* WallpaperPresetHelper.swift in Sources */,
+				WNDCK01A2B3C4D5E6F70829 /* WindowDockHelper.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F70829 /* YandexPreviewLoader.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F7082A /* YandexOAuthConfig.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F7082B /* YandexOAuthCallbackServer.swift in Sources */,
+				Y4ND3X01A2B3C4D5E6F7082C /* YandexOAuthSecrets.generated.swift in Sources */,
 				SPKUP01A2B3C4D5E6F70829 /* SparkleUpdater.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

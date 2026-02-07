@@ -9,11 +9,19 @@ enum NotificationAuthorizationStatus {
     case provisional
 }
 
-final class NotificationManager {
+final class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationManager()
     private let center = UNUserNotificationCenter.current()
 
-    private init() {}
+    private override init() {
+        super.init()
+        center.delegate = self
+    }
+
+    /// Показывать уведомления даже когда приложение открыто (в фокусе).
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .list])
+    }
 
     /// Запрашивает разрешение на уведомления (показывает системный диалог). Возвращает true, если разрешено.
     func requestAuthorization() async -> Bool {

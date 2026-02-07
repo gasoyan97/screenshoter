@@ -82,6 +82,9 @@ jobs:
 
       - name: Build (with signing)
         if: env.SIGNING_ENABLED == 'true'
+        env:
+          YANDEX_CLIENT_ID: ${{ secrets.YANDEX_CLIENT_ID }}
+          YANDEX_CLIENT_SECRET: ${{ secrets.YANDEX_CLIENT_SECRET }}
         run: |
           xcodebuild -project ScreenShoter.xcodeproj -scheme ScreenShoter -configuration Release \
             -archivePath build/ScreenShoter.xcarchive \
@@ -94,6 +97,9 @@ jobs:
 
       - name: Build (without signing)
         if: env.SIGNING_ENABLED == 'false'
+        env:
+          YANDEX_CLIENT_ID: ${{ secrets.YANDEX_CLIENT_ID }}
+          YANDEX_CLIENT_SECRET: ${{ secrets.YANDEX_CLIENT_SECRET }}
         run: |
           xcodebuild -project ScreenShoter.xcodeproj -scheme ScreenShoter -configuration Release \
             -derivedDataPath build/DerivedData \

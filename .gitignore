@@ -4,6 +4,10 @@
 .sparkle-secrets/
 .sparkle-tools/
 
+# OAuth secrets (use Secrets.xcconfig.example as template)
+ScreenShoter/Secrets.xcconfig
+ScreenShoter/YandexOAuthSecrets.generated.swift
+
 # Build artifacts
 *.dmg
 *.zip

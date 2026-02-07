@@ -1,23 +1,20 @@
 import SwiftUI
 
-// MARK: - Liquid Glass стиль (Apple-inspired)
-// Полупрозрачные материалы, скругления, мягкие границы
+// MARK: - Apple-style UI
+// Native macOS look: subtle materials, SF Symbols, minimal chrome
 
 struct GlassBackground: ViewModifier {
-    var cornerRadius: CGFloat = 16
-    var material: Material = .ultraThinMaterial
+    var cornerRadius: CGFloat = 12
+    var material: Material = .regularMaterial
 
     func body(content: Content) -> some View {
         content
             .background(material)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(.white.opacity(0.25), lineWidth: 0.5)
-            )
     }
 }
 
+/// Стиль кнопки как у native macOS menu items: лёгкий hover, без тяжёлых границ.
 struct GlassButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         GlassButtonStyleBody(configuration: configuration)
@@ -30,31 +27,26 @@ private struct GlassButtonStyleBody: View {
 
     var body: some View {
         configuration.label
-            .padding(.horizontal, 14)
-            .padding(.vertical, 10)
+            .font(.body)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
             .contentShape(Rectangle())
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
                     .fill(backgroundColor)
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .strokeBorder(Color.primary.opacity(isHovered ? 0.18 : 0.1), lineWidth: 0.5)
-            )
-            .onHover { hovering in
-                isHovered = hovering
-            }
+            .onHover { isHovered = $0 }
     }
 
     private var backgroundColor: Color {
-        if configuration.isPressed { return Color.primary.opacity(0.12) }
+        if configuration.isPressed { return Color.primary.opacity(0.14) }
         if isHovered { return Color.primary.opacity(0.08) }
-        return Color.primary.opacity(0.04)
+        return Color.clear
     }
 }
 
 extension View {
-    func glassBackground(cornerRadius: CGFloat = 16, material: Material = .ultraThinMaterial) -> some View {
+    func glassBackground(cornerRadius: CGFloat = 12, material: Material = .regularMaterial) -> some View {
         modifier(GlassBackground(cornerRadius: cornerRadius, material: material))
     }
 }

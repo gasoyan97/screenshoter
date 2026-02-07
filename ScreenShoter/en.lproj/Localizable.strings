@@ -182,6 +182,7 @@
 
 /* WebDAV errors */
 "error.invalid_url" = "Invalid or unsupported URL. Check URL in settings (must start with https://).";
+"error.save_failed" = "Save failed";
 
 /* Stubs (feature in development) */
 "stub.ok" = "OK";
