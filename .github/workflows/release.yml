@@ -39,6 +39,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG="${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.event.release.tag_name }}"
           echo "Using tag: $TAG"
