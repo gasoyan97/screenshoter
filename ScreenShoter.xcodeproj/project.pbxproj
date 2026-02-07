@@ -38,6 +38,7 @@
 		Y4ND3X01A2B3C4D5E6F70829 /* YandexPreviewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */; };
 		Y4ND3X01A2B3C4D5E6F7082A /* YandexOAuthConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */; };
 		Y4ND3X01A2B3C4D5E6F7082B /* YandexOAuthCallbackServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */; };
+		SPKUP01A2B3C4D5E6F70829 /* SparkleUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexPreviewLoader.swift; sourceTree = "<group>"; };
 		Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexOAuthConfig.swift; sourceTree = "<group>"; };
 		Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexOAuthCallbackServer.swift; sourceTree = "<group>"; };
+		SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleUpdater.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				B2C3D4E5F60718293A4B5C6D /* NotificationManager.swift */,
 				4E316430B534C8F89F936DC6 /* ScreenshotService.swift */,
 				25FCCFC09E18428C8671C622 /* ScreenShoterApp.swift */,
+				SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */,
 				C3D4E5F60718293A4B5C6D7E /* SetupView.swift */,
 				4D87AEEB04C78E7F690FAE68 /* SettingsView.swift */,
 				D4E5F60718293A4B5C6D7E8F /* UploadHistory.swift */,
@@ -242,6 +245,7 @@
 				Y4ND3X01A2B3C4D5E6F70829 /* YandexPreviewLoader.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F7082A /* YandexOAuthConfig.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F7082B /* YandexOAuthCallbackServer.swift in Sources */,
+				SPKUP01A2B3C4D5E6F70829 /* SparkleUpdater.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,6 +1,5 @@
 import SwiftUI
 import AppKit
-import Sparkle
 
 struct SettingsView: View {
     @State private var defaultSaveFolder: URL? = AppSettings.defaultSaveFolder
@@ -277,14 +276,19 @@ struct SettingsView: View {
 
             Section {
                 Button("Проверить обновления…") {
-                    SPUStandardUpdaterController(
-                        startingUpdater: true,
-                        updaterDelegate: nil,
-                        userDriverDelegate: nil
-                    ).checkForUpdates(nil)
+                    SparkleUpdater.checkForUpdates()
+                }
+                Button("Написать автору") {
+                    var components = URLComponents()
+                    components.scheme = "mailto"
+                    components.path = "work@gasoyan.ru"
+                    components.queryItems = [URLQueryItem(name: "subject", value: "есть идея по приложению")]
+                    if let url = components.url {
+                        NSWorkspace.shared.open(url)
+                    }
                 }
             } header: { Text("Обновления") }
-            footer: { Text("Проверить наличие новой версии ScreenShoter.") }
+            footer: { Text("Проверить наличие новой версии ScreenShoter. Есть идея — напишите разработчику.") }
         }
         .formStyle(.grouped)
         .frame(width: 460, height: 700)

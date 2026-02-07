@@ -22,6 +22,7 @@ struct ScreenShoterApp: App {
 
     init() {
         _ = NotificationManager.shared
+        _ = SparkleUpdater.controller
     }
 
     var body: some Scene {

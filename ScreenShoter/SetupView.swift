@@ -13,6 +13,12 @@ private enum OnboardingStep: Int, CaseIterable {
 struct SetupView: View {
     @State private var step: OnboardingStep = .welcome
     @State private var launchAtLogin: Bool = LaunchAtLoginManager.isEnabled
+    @State private var yandexOAuthToken: String = AppSettings.yandexOAuthToken
+    @State private var showYandexCodeInput = false
+    @State private var yandexVerificationCode = ""
+    @State private var yandexCodeExchangeInProgress = false
+    @State private var yandexMessage: String?
+    @State private var autoUpload: Bool = AppSettings.autoUploadToWebDAV
 
     var body: some View {
         VStack(spacing: 0) {
@@ -191,11 +197,107 @@ struct SetupView: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Облако (необязательно)")
                 .font(.title2.weight(.semibold))
-            Text("Загрузка скриншотов в Яндекс.Диск. Подключить можно позже в меню «Настройки».")
+            Text("Загрузка скриншотов в Яндекс.Диск. Можно подключить позже в меню «Настройки».")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
+
+            VStack(alignment: .leading, spacing: 12) {
+                if YandexOAuthConfig.builtInClientID.isEmpty {
+                    Text("Приложение не настроено для подключения Яндекс.Диска.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                } else if yandexOAuthToken.trimmingCharacters(in: .whitespaces).isEmpty {
+                    if !YandexOAuthConfig.builtInClientSecret.isEmpty {
+                        Button(action: startYandexOAuthFlow) {
+                            HStack {
+                                Image(systemName: "link.badge.plus")
+                                Text("Подключить Яндекс.Диск")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        Text("Откроется браузер. Войдите в аккаунт, нажмите «Разрешить» и вставьте код со страницы ниже.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        if showYandexCodeInput {
+                            HStack(spacing: 8) {
+                                TextField("Код со страницы", text: $yandexVerificationCode)
+                                    .textFieldStyle(.roundedBorder)
+                                Button(yandexCodeExchangeInProgress ? "Получение…" : "Получить токен") {
+                                    exchangeYandexCodeForToken()
+                                }
+                                .disabled(yandexCodeExchangeInProgress || yandexVerificationCode.trimmingCharacters(in: .whitespaces).isEmpty)
+                            }
+                        }
+                    } else {
+                        Text("Укажите Client secret в YandexOAuthConfig и пересоберите приложение.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                } else {
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.green)
+                        Text("Яндекс.Диск подключён")
+                            .foregroundStyle(.secondary)
+                    }
+                    Toggle("Загружать в облако после сохранения", isOn: $autoUpload)
+                        .toggleStyle(.switch)
+                        .onChange(of: autoUpload) { _, new in
+                            AppSettings.autoUploadToWebDAV = new
+                        }
+                }
+                if let msg = yandexMessage {
+                    Text(msg)
+                        .font(.caption)
+                        .foregroundStyle(msg.contains("успешно") || msg.contains("получен") || msg.contains("сохранён") ? Color.green : Color.orange)
+                }
+            }
+            .padding(12)
+            .background(.quaternary.opacity(0.5))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+
             Spacer()
+        }
+        .onAppear {
+            yandexOAuthToken = AppSettings.yandexOAuthToken
+            autoUpload = AppSettings.autoUploadToWebDAV
+        }
+    }
+
+    private func startYandexOAuthFlow() {
+        yandexMessage = nil
+        guard let url = YandexOAuthConfig.authorizeURL else { return }
+        NSWorkspace.shared.open(url)
+        showYandexCodeInput = true
+    }
+
+    private func exchangeYandexCodeForToken() {
+        let code = yandexVerificationCode.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !code.isEmpty else { return }
+        yandexMessage = nil
+        yandexCodeExchangeInProgress = true
+        Task {
+            do {
+                let token = try await YandexOAuthConfig.exchangeCodeForToken(code)
+                await MainActor.run {
+                    yandexOAuthToken = token
+                    AppSettings.yandexOAuthToken = token
+                    yandexVerificationCode = ""
+                    showYandexCodeInput = false
+                    yandexCodeExchangeInProgress = false
+                    yandexMessage = "Токен получен и сохранён."
+                    autoUpload = true
+                    AppSettings.autoUploadToWebDAV = true
+                }
+            } catch {
+                await MainActor.run {
+                    yandexCodeExchangeInProgress = false
+                    yandexMessage = (error as NSError).userInfo[NSLocalizedDescriptionKey] as? String ?? error.localizedDescription
+                }
+            }
         }
     }
 
@@ -213,7 +315,7 @@ struct SetupView: View {
 
     private var bottomBar: some View {
         HStack {
-            if step.rawValue > 0 && step != .cloud {
+            if step.rawValue > 0 {
                 Button("Назад") {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         step = OnboardingStep(rawValue: step.rawValue - 1) ?? .welcome
