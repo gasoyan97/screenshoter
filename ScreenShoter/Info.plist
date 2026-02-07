@@ -23,9 +23,9 @@
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.0.8</string>
+    <string>0.0.10</string>
     <key>CFBundleVersion</key>
-    <string>8</string>
+    <string>10</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.utilities</string>
     <key>LSMinimumSystemVersion</key>
@@ -39,7 +39,7 @@
     <key>NSScreenCaptureUsageDescription</key>
     <string>ScreenShoter делает скриншоты экрана: вся область, окно или выбранный фрагмент. Доступ к записи экрана нужен для режима «Выбранная область».</string>
     <key>SUFeedURL</key>
-    <string>https://gasoyan97.github.io/screnshoter/appcast.xml</string>
+    <string>https://gasoyan97.github.io/screenshoter/appcast.xml</string>
     <key>SUPublicEDKey</key>
     <string>lnnvt81WfFEdzfZOaLH6RXW9wvZ3ilO8pYtL3Ekkd3A=</string>
     <key>SUAllowsAutomaticUpdates</key>
