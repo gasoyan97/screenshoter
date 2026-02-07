@@ -1,4 +1,9 @@
-node_modules/
 .DS_Store
 *.log
 .env
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
