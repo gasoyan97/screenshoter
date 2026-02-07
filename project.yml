@@ -5,12 +5,19 @@ options:
     macOS: "14.0"
   xcodeVersion: "15.0"
   generateEmptyDirectories: true
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: "2.5.0"
 targets:
   ScreenShoter:
     type: application
     platform: macOS
     sources:
       - path: ScreenShoter
+    dependencies:
+      - package: Sparkle
+        product: Sparkle
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.screentshoter.app

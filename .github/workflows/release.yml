@@ -1,0 +1,79 @@
+# OTA Release Workflow for ScreenShoter
+#
+# Generates appcast.xml from release assets and deploys to GitHub Pages.
+#
+# Usage:
+# 1. Build, sign, notarize ScreenShoter.app locally (see docs/OTA_UPDATES.md)
+# 2. Create a zip: ditto -c -k --sequesterRsrc --keepParent ScreenShoter.app ScreenShoter-X.Y.Z.zip
+# 3. Create GitHub Release (e.g. v1.0.0), upload the signed .zip as asset
+# 4. This workflow runs automatically: generates appcast and publishes to GitHub Pages
+#
+# Required secrets:
+#   SPARKLE_PRIVATE_KEY — Ed25519 private key, base64 (from: ./bin/generate_keys -x key.pem && base64 key.pem)
+#
+# Repo settings:
+#   - Enable GitHub Pages (Settings → Pages → Source: GitHub Actions)
+#   - Update SUFeedURL in Info.plist to: https://OWNER.github.io/REPO/appcast.xml
+
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  appcast:
+    runs-on: macos-14
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download release assets
+        run: |
+          gh release download "${{ github.event.release.tag_name }}" -D updates -A '*.zip' -A '*.dmg' -A '*.tar.xz' || true
+          ls -la updates/
+
+      - name: Setup Sparkle tools
+        run: |
+          SPARKLE_VERSION="2.8.1"
+          curl -sL "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" -o sparkle.tar.xz
+          tar xf sparkle.tar.xz
+          ./Sparkle/bin/generate_appcast --help || true
+
+      - name: Generate appcast
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          BASE_URL="https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}"
+          mkdir -p pages
+          if [ -z "$SPARKLE_PRIVATE_KEY" ] || [ "$SPARKLE_PRIVATE_KEY" = "" ]; then
+            echo "::warning::SPARKLE_PRIVATE_KEY not set. Add it as repo secret for signed appcast."
+            echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"><channel><title>ScreenShoter</title><description>Updates</description></channel></rss>" > pages/appcast.xml
+          else
+            echo "$SPARKLE_PRIVATE_KEY" | base64 -d > private_key.pem
+            chmod 600 private_key.pem
+            ./Sparkle/bin/generate_appcast -s private_key.pem --link "$BASE_URL/" updates/ || \
+            ./Sparkle/bin/generate_appcast -s private_key.pem --no-deltas --link "$BASE_URL/" updates/ || \
+            ./Sparkle/bin/generate_appcast -s private_key.pem updates/
+            mv updates/appcast.xml pages/appcast.xml 2>/dev/null || cp docs/appcast.xml.example pages/appcast.xml
+          fi
+          cat pages/appcast.xml
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

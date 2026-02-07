@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>ScreenShoter Changelog</title>
+        <description>Обновления ScreenShoter</description>
+        <language>ru</language>
+        <item>
+            <title>Version 1.0.0 — исправления и улучшения</title>
+            <link>https://github.com/gasoyan97/screnshoter/releases</link>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+            <sparkle:releaseNotesLink>https://github.com/your/scrinsjater/releases/tag/v1.0.0</sparkle:releaseNotesLink>
+            <pubDate>Sat, 08 Feb 2025 12:00:00 +0000</pubDate>
+            <enclosure
+                url="https://github.com/gasoyan97/screnshoter/releases/download/v1.0.0/ScreenShoter-1.0.0.zip"
+                sparkle:edSignature="REPLACE_WITH_SIGN_UPDATE_OUTPUT"
+                length="REPLACE_WITH_FILE_SIZE_BYTES"
+                type="application/octet-stream" />
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+        </item>
+    </channel>
+</rss>

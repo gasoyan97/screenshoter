@@ -13,9 +13,6 @@ private enum OnboardingStep: Int, CaseIterable {
 struct SetupView: View {
     @State private var step: OnboardingStep = .welcome
     @State private var launchAtLogin: Bool = LaunchAtLoginManager.isEnabled
-    @State private var webdavURL: String = AppSettings.webdavURL
-    @State private var webdavUsername: String = AppSettings.webdavUsername
-    @State private var webdavPassword: String = AppSettings.webdavPassword
 
     var body: some View {
         VStack(spacing: 0) {
@@ -194,24 +191,10 @@ struct SetupView: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("Облако (необязательно)")
                 .font(.title2.weight(.semibold))
-            Text("Можно настроить загрузку скриншотов по WebDAV (Nextcloud, Яндекс.Диск по WebDAV, свой сервер). Позже — в меню «Настройки».")
+            Text("Загрузка скриншотов в Яндекс.Диск. Подключить можно позже в меню «Настройки».")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text("WebDAV (URL, логин, пароль):")
-                    .font(.subheadline.weight(.medium))
-                TextField("URL", text: $webdavURL, prompt: Text("https://webdav.example.com или https://webdav.yandex.ru"))
-                    .textFieldStyle(.roundedBorder)
-                    .onChange(of: webdavURL) { _, new in AppSettings.webdavURL = new }
-                TextField("Логин", text: $webdavUsername)
-                    .textFieldStyle(.roundedBorder)
-                    .onChange(of: webdavUsername) { _, new in AppSettings.webdavUsername = new }
-                SecureField("Пароль", text: $webdavPassword)
-                    .textFieldStyle(.roundedBorder)
-                    .onChange(of: webdavPassword) { _, new in AppSettings.webdavPassword = new }
-            }
             Spacer()
         }
     }

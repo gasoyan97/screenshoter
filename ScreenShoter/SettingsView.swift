@@ -1,12 +1,15 @@
 import SwiftUI
 import AppKit
+import Sparkle
 
 struct SettingsView: View {
     @State private var defaultSaveFolder: URL? = AppSettings.defaultSaveFolder
     @State private var screenshotFormat: ScreenshotFormat = AppSettings.screenshotFormat
-    @State private var webdavURL: String = AppSettings.webdavURL
-    @State private var webdavUsername: String = AppSettings.webdavUsername
-    @State private var webdavPassword: String = AppSettings.webdavPassword
+    @State private var yandexOAuthToken: String = AppSettings.yandexOAuthToken
+    @State private var oauthTokenInProgress = false
+    @State private var showYandexCodeInput = false
+    @State private var yandexVerificationCode = ""
+    @State private var yandexCodeExchangeInProgress = false
     @State private var autoUpload: Bool = AppSettings.autoUploadToWebDAV
     @State private var wallpaperPath: String = AppSettings.wallpaperImagePath ?? ""
     @State private var useMacWallpaper: Bool = AppSettings.useMacWallpaper
@@ -116,7 +119,7 @@ struct SettingsView: View {
                     }
                 }
             } header: { Text("Уведомления") }
-            footer: { Text("Уведомление показывается после загрузки скриншота в облако (WebDAV).") }
+            footer: { Text("Уведомление показывается после загрузки скриншота в облако.") }
 
             Section {
                 HStack {
@@ -165,36 +168,71 @@ struct SettingsView: View {
             footer: { Text("Глобальные шорткаты (работают, когда приложение в фоне). По умолчанию: ⌘⇧E — с редактированием, ⌘⇧S — сохранение в папку и загрузка в облако. Нужно разрешение «Универсальный доступ» в Системных настройках.") }
 
             Section {
+                Toggle("Загружать в облако после сохранения", isOn: $autoUpload)
+                    .onChange(of: autoUpload) { _, new in AppSettings.autoUploadToWebDAV = new }
+
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Подойдёт любой WebDAV: Nextcloud, Яндекс.Диск по WebDAV, свой сервер и т.п.")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    TextField("URL сервера", text: $webdavURL, prompt: Text("https://webdav.example.com или https://webdav.yandex.ru"))
-                        .textFieldStyle(.roundedBorder)
-                        .onChange(of: webdavURL) { _, new in AppSettings.webdavURL = new }
-                    TextField("Логин (email или имя пользователя)", text: $webdavUsername)
-                        .textFieldStyle(.roundedBorder)
-                        .onChange(of: webdavUsername) { _, new in AppSettings.webdavUsername = new }
-                    SecureField("Пароль", text: $webdavPassword)
-                        .textFieldStyle(.roundedBorder)
-                        .onChange(of: webdavPassword) { _, new in AppSettings.webdavPassword = new }
-                    Toggle("Загружать в облако после сохранения", isOn: $autoUpload)
-                        .onChange(of: autoUpload) { _, new in AppSettings.autoUploadToWebDAV = new }
+                    if YandexOAuthConfig.builtInClientID.isEmpty {
+                        Text("Приложение не настроено для подключения Яндекс.Диска.")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        Link("Инструкция для разработчика", destination: URL(string: "https://yandex.ru/dev/disk-api/doc/ru/concepts/quickstart")!)
+                            .font(.caption)
+                    } else if yandexOAuthToken.trimmingCharacters(in: .whitespaces).isEmpty {
+                        if YandexOAuthConfig.builtInClientSecret.isEmpty {
+                            Text("Укажите Client secret в YandexOAuthConfig.swift (скопируйте с страницы приложения на oauth.yandex.ru) и пересоберите приложение.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        Button(action: startOAuthTokenFlow) {
+                            HStack {
+                                Image(systemName: "link.badge.plus")
+                                Text("Подключить Яндекс.Диск")
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 10)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        Text("Нажмите кнопку — откроется браузер. Войдите в аккаунт и нажмите «Разрешить», затем скопируйте код со страницы и вставьте ниже.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        if showYandexCodeInput {
+                            HStack(spacing: 8) {
+                                TextField("Код со страницы", text: $yandexVerificationCode)
+                                    .textFieldStyle(.roundedBorder)
+                                Button(yandexCodeExchangeInProgress ? "Получение…" : "Получить токен") {
+                                    exchangeYandexCodeForToken()
+                                }
+                                .disabled(yandexCodeExchangeInProgress || yandexVerificationCode.trimmingCharacters(in: .whitespaces).isEmpty)
+                            }
+                        }
+                    } else {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                            Text("Яндекс.Диск подключён")
+                                .foregroundStyle(.secondary)
+                            Spacer()
+                            Button("Отключить") {
+                                yandexOAuthToken = ""
+                                AppSettings.yandexOAuthToken = ""
+                            }
+                            .buttonStyle(.borderless)
+                        }
+                        Button(webdavTestInProgress ? "Проверка…" : "Проверить подключение") {
+                            testYandexRESTConnection()
+                        }
+                        .disabled(webdavTestInProgress)
+                    }
                     if let msg = webdavTestMessage {
                         Text(msg)
                             .font(.caption)
-                            .foregroundStyle(msg.contains("успешно") ? Color.green : Color.orange)
+                            .foregroundStyle(msg.contains("успешно") || msg.contains("получен") ? Color.green : Color.orange)
                     }
-                    Button(webdavTestInProgress ? "Проверка…" : "Проверить подключение") {
-                        testWebDAVConnection()
-                    }
-                    .disabled(webdavTestInProgress || webdavURL.isEmpty || webdavUsername.isEmpty || webdavPassword.isEmpty)
                 }
                 .padding(.vertical, 4)
-            } header: { Text("WebDAV") }
-            footer: {
-                Text("Для Яндекс.Диска: URL — https://webdav.yandex.ru или https://webdav.yandex.com (если один не работает, попробуйте другой). Логин — ваш email, пароль — только пароль приложения: id.yandex.ru → Безопасность → Пароли приложений → создать для «WebDAV». Новый пароль действует через 2–3 ч.")
-            }
+            } header: { Text("Яндекс.Диск") }
+            footer: { Text("Нажмите «Подключить Яндекс.Диск» — войдите в аккаунт и нажмите «Разрешить». Файлы сохраняются в папку ScreenShoter_mac.") }
 
             Section {
                 Picker("Готовый фон", selection: $wallpaperPreset) {
@@ -236,6 +274,17 @@ struct SettingsView: View {
                 }
             } header: { Text("Обои для скриншотов") }
             footer: { Text("При сохранении скриншот будет наложен на обои. Отступы — расстояние от краёв обоев до скриншота (S–XXL, 20–150 pt).") }
+
+            Section {
+                Button("Проверить обновления…") {
+                    SPUStandardUpdaterController(
+                        startingUpdater: true,
+                        updaterDelegate: nil,
+                        userDriverDelegate: nil
+                    ).checkForUpdates(nil)
+                }
+            } header: { Text("Обновления") }
+            footer: { Text("Проверить наличие новой версии ScreenShoter.") }
         }
         .formStyle(.grouped)
         .frame(width: 460, height: 700)
@@ -244,9 +293,7 @@ struct SettingsView: View {
             screenshotFormat = AppSettings.screenshotFormat
             scaleDownRetina = AppSettings.scaleDownRetina
             compressionLevel = AppSettings.compressionLevel
-            webdavURL = AppSettings.webdavURL
-            webdavUsername = AppSettings.webdavUsername
-            webdavPassword = AppSettings.webdavPassword
+            yandexOAuthToken = AppSettings.yandexOAuthToken
             autoUpload = AppSettings.autoUploadToWebDAV
             wallpaperPath = AppSettings.wallpaperImagePath ?? ""
             useMacWallpaper = AppSettings.useMacWallpaper
@@ -280,19 +327,45 @@ struct SettingsView: View {
         await MainActor.run { notificationStatus = status }
     }
 
-    private func testWebDAVConnection() {
-        AppSettings.webdavURL = webdavURL
-        AppSettings.webdavUsername = webdavUsername
-        AppSettings.webdavPassword = webdavPassword
+    private func startOAuthTokenFlow() {
+        webdavTestMessage = nil
+        guard let url = YandexOAuthConfig.authorizeURL else { return }
+        NSWorkspace.shared.open(url)
+        showYandexCodeInput = true
+    }
+
+    private func exchangeYandexCodeForToken() {
+        let code = yandexVerificationCode.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !code.isEmpty else { return }
+        webdavTestMessage = nil
+        yandexCodeExchangeInProgress = true
+        Task {
+            do {
+                let token = try await YandexOAuthConfig.exchangeCodeForToken(code)
+                await MainActor.run {
+                    yandexOAuthToken = token
+                    AppSettings.yandexOAuthToken = token
+                    yandexVerificationCode = ""
+                    showYandexCodeInput = false
+                    yandexCodeExchangeInProgress = false
+                    webdavTestMessage = "Токен получен и сохранён."
+                }
+            } catch {
+                await MainActor.run {
+                    yandexCodeExchangeInProgress = false
+                    webdavTestMessage = (error as NSError).userInfo[NSLocalizedDescriptionKey] as? String ?? error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private func testYandexRESTConnection() {
+        AppSettings.yandexOAuthToken = yandexOAuthToken
         webdavTestMessage = nil
         webdavTestInProgress = true
         Task {
             do {
-                try await WebDAVUploader.shared.testConnection(
-                    baseURL: webdavURL.isEmpty ? nil : webdavURL,
-                    username: webdavUsername.isEmpty ? nil : webdavUsername,
-                    password: webdavPassword.isEmpty ? nil : webdavPassword
-                )
+                try await WebDAVUploader.shared.testYandexRESTConnection(oauthToken: yandexOAuthToken.isEmpty ? nil : yandexOAuthToken)
                 await MainActor.run {
                     webdavTestInProgress = false
                     webdavTestMessage = "Подключение успешно."

@@ -23,6 +23,7 @@
 		B6F8EF8F7B24FC8642331045 /* ScreenShoterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25FCCFC09E18428C8671C622 /* ScreenShoterApp.swift */; };
 		E44A94011C82DF999C78D8AD /* ScreenshotService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E316430B534C8F89F936DC6 /* ScreenshotService.swift */; };
 		F1A2B3C4D5E6F70829304B5C /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B3C4D5E6F70829304B5C6D /* ServiceManagement.framework */; };
+		N3TW0RK01A2B3C4D5E6F70829 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = N3TW0RK02B3C4D5E6F7082930 /* Network.framework */; };
 		H0TKEY01A2B3C4D5E6F70829 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = H0TKEY02B3C4D5E6F7082930 /* HotkeyManager.swift */; };
 		M4CW4LL01A2B3C4D5E6F70829 /* MacWallpaperHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = M4CW4LL02B3C4D5E6F7082930 /* MacWallpaperHelper.swift */; };
 		OCR5V01A2B3C4D5E6F708293 /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OCR5V02B3C4D5E6F7082930 /* OCRService.swift */; };
@@ -35,6 +36,8 @@
 		SCR0LL01A2B3C4D5E6F70829 /* ScrollCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SCR0LL02B3C4D5E6F7082930 /* ScrollCaptureService.swift */; };
 		W4LL01A2B3C4D5E6F708293 /* WallpaperPresetHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */; };
 		Y4ND3X01A2B3C4D5E6F70829 /* YandexPreviewLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */; };
+		Y4ND3X01A2B3C4D5E6F7082A /* YandexOAuthConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */; };
+		Y4ND3X01A2B3C4D5E6F7082B /* YandexOAuthCallbackServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +59,7 @@
 		D4E5F60718293A4B5C6D7E8F /* UploadHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadHistory.swift; sourceTree = "<group>"; };
 		E5F60718293A4B5C6D7E8F90 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		F2B3C4D5E6F70829304B5C6D /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		N3TW0RK02B3C4D5E6F7082930 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = System/Library/Frameworks/Network.framework; sourceTree = SDKROOT; };
 		F60718293A4B5C6D7E8F9012 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		H0TKEY02B3C4D5E6F7082930 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		M4CW4LL02B3C4D5E6F7082930 /* MacWallpaperHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacWallpaperHelper.swift; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 		SCR0LL02B3C4D5E6F7082930 /* ScrollCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollCaptureService.swift; sourceTree = "<group>"; };
 		W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperPresetHelper.swift; sourceTree = "<group>"; };
 		Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexPreviewLoader.swift; sourceTree = "<group>"; };
+		Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexOAuthConfig.swift; sourceTree = "<group>"; };
+		Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YandexOAuthCallbackServer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1A2B3C4D5E6F70829304B5C /* ServiceManagement.framework in Frameworks */,
+				N3TW0RK01A2B3C4D5E6F70829 /* Network.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +122,8 @@
 				0718293A4B5C6D7E8F901234 /* WebDAVUploader.swift */,
 				W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */,
 				Y4ND3X02B3C4D5E6F7082930 /* YandexPreviewLoader.swift */,
+				Y4ND3X02B3C4D5E6F7082931 /* YandexOAuthConfig.swift */,
+				Y4ND3X02B3C4D5E6F7082932 /* YandexOAuthCallbackServer.swift */,
 			);
 			path = ScreenShoter;
 			sourceTree = "<group>";
@@ -131,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				F2B3C4D5E6F70829304B5C6D /* ServiceManagement.framework */,
+				N3TW0RK02B3C4D5E6F7082930 /* Network.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -152,6 +162,7 @@
 			);
 			name = ScreenShoter;
 			packageProductDependencies = (
+				SPARKLE001A2B3C4D5E6F70829 /* Sparkle */,
 			);
 			productName = ScreenShoter;
 			productReference = A995FCBCC9D70D1C2549D216 /* ScreenShoter.app */;
@@ -176,6 +187,9 @@
 			);
 			mainGroup = C82FC0686C3836E09D5FC583;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				SPARKLE002B3C4D5E6F7082930 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -226,6 +240,8 @@
 				A6B7C8D9EA0B6D748F90123 /* WebDAVUploader.swift in Sources */,
 				W4LL01A2B3C4D5E6F708293 /* WallpaperPresetHelper.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F70829 /* YandexPreviewLoader.swift in Sources */,
+				Y4ND3X01A2B3C4D5E6F7082A /* YandexOAuthConfig.swift in Sources */,
+				Y4ND3X01A2B3C4D5E6F7082B /* YandexOAuthCallbackServer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +429,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		SPARKLE002B3C4D5E6F7082930 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		SPARKLE001A2B3C4D5E6F70829 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = SPARKLE002B3C4D5E6F7082930 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D3B0EC106398018CCE11D26C /* Project object */;
 }

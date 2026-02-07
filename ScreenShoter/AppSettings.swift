@@ -123,19 +123,15 @@ enum AppSettings {
         }
     }
 
-    static var webdavURL: String {
-        get { defaults.string(forKey: "webdavURL") ?? "" }
-        set { defaults.set(newValue, forKey: "webdavURL") }
+    /// OAuth-токен для Яндекс.Диска (REST API).
+    static var yandexOAuthToken: String {
+        get { defaults.string(forKey: "yandexOAuthToken") ?? "" }
+        set { defaults.set(newValue, forKey: "yandexOAuthToken") }
     }
 
-    static var webdavUsername: String {
-        get { defaults.string(forKey: "webdavUsername") ?? "" }
-        set { defaults.set(newValue, forKey: "webdavUsername") }
-    }
-
-    static var webdavPassword: String {
-        get { defaults.string(forKey: "webdavPassword") ?? "" }
-        set { defaults.set(newValue, forKey: "webdavPassword") }
+    /// true, если настроена загрузка в облако (есть OAuth-токен Яндекс.Диска).
+    static var canUploadToCloud: Bool {
+        !yandexOAuthToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     static var autoUploadToWebDAV: Bool {
@@ -160,7 +156,7 @@ enum AppSettings {
         set { defaults.set(newValue, forKey: "videoSaveFolder") }
     }
 
-    /// Загружать записанное видео в WebDAV после остановки записи.
+    /// Загружать записанное видео в облако (Яндекс.Диск) после остановки записи.
     static var autoUploadVideoToWebDAV: Bool {
         get { defaults.bool(forKey: "autoUploadVideoToWebDAV") }
         set { defaults.set(newValue, forKey: "autoUploadVideoToWebDAV") }

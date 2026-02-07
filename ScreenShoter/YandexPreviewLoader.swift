@@ -1,8 +1,7 @@
 import Foundation
 import AppKit
 
-/// Загружает превью изображения с Яндекс.Диска по WebDAV API.
-/// Документация: https://yandex.ru/dev/disk/doc/ru/reference/preview
+/// Загружает превью изображения с Яндекс.Диска (WebDAV URL с OAuth).
 /// GET /path/file.png?preview&size=S — размер S = 150px по ширине.
 final class YandexPreviewLoader {
     static let shared = YandexPreviewLoader()
@@ -15,13 +14,13 @@ final class YandexPreviewLoader {
         session = URLSession(configuration: config)
     }
 
-    /// Загружает превью. Возвращает nil, если webdavURL не Yandex или нет credentials.
+    /// Загружает превью. Возвращает nil, если URL не Yandex или нет OAuth-токена.
     func loadPreview(webdavURL: String?, size: String = "S") async -> NSImage? {
+        let token = AppSettings.yandexOAuthToken.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let base = webdavURL,
               !base.isEmpty,
               base.lowercased().contains("yandex"),
-              !AppSettings.webdavUsername.isEmpty,
-              !AppSettings.webdavPassword.isEmpty else {
+              !token.isEmpty else {
             return nil
         }
         guard var components = URLComponents(string: base) else { return nil }
@@ -31,11 +30,9 @@ final class YandexPreviewLoader {
         guard let url = components.url else { return nil }
         let key = url.absoluteString as NSString
         if let cached = cache.object(forKey: key) { return cached }
-        let credential = "\(AppSettings.webdavUsername):\(AppSettings.webdavPassword)"
-        guard let credentialData = credential.data(using: .utf8) else { return nil }
         var request = URLRequest(url: url)
-        request.setValue("Basic \(credentialData.base64EncodedString())", forHTTPHeaderField: "Authorization")
-        request.setValue("ScreenShoter/1.0 (WebDAV)", forHTTPHeaderField: "User-Agent")
+        request.setValue("OAuth \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("ScreenShoter/1.0 (Yandex)", forHTTPHeaderField: "User-Agent")
         guard let (data, response) = try? await session.data(for: request),
               let http = response as? HTTPURLResponse,
               http.statusCode == 200,

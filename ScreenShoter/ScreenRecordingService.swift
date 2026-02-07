@@ -195,16 +195,11 @@ final class ScreenRecordingService: NSObject, ObservableObject {
         isRecording = false
 
         let name = url.lastPathComponent
-        let canUpload = !AppSettings.webdavURL.isEmpty && !AppSettings.webdavUsername.isEmpty && !AppSettings.webdavPassword.isEmpty
-        if AppSettings.autoUploadVideoToWebDAV, canUpload {
+        if AppSettings.autoUploadVideoToWebDAV, AppSettings.canUploadToCloud {
             Task { @MainActor in
                 appState.setTrayUploadStatus(.uploading(fileName: name))
                 do {
-                    let result = try await WebDAVUploader.shared.upload(
-                        fileURL: url,
-                        username: AppSettings.webdavUsername,
-                        password: AppSettings.webdavPassword
-                    )
+                    let result = try await WebDAVUploader.shared.upload(fileURL: url)
                     UploadHistory.shared.add(result)
                     let link = result.publicURL ?? result.fileURL.absoluteString
                     appState.setTrayUploadStatus(.success(fileName: result.fileName, link: link))

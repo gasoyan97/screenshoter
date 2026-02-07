@@ -59,6 +59,14 @@ xcrun stapler staple ScreenShoter.app
 - **Версия для пользователя:** `CFBundleShortVersionString` в Info.plist (например, 1.0.0).
 - **Номер сборки:** `CFBundleVersion` в Info.plist (увеличивайте при каждой загрузке в нотаризацию/дистрибуцию).
 
+### 5. OTA-обновления (Sparkle)
+
+Приложение поддерживает обновления по воздуху через [Sparkle](https://sparkle-project.org/). Настройка выполнена. Осталось:
+1. Добавить `SPARKLE_PRIVATE_KEY` в GitHub Secrets (см. [docs/SPARKLE_SETUP_DONE.md](docs/SPARKLE_SETUP_DONE.md))
+2. Включить GitHub Pages (Source: GitHub Actions)
+
+Подробная инструкция — [docs/OTA_UPDATES.md](docs/OTA_UPDATES.md).
+
 ## Структура проекта
 
 - **ScreenShoter/** — исходный код приложения

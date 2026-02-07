@@ -590,17 +590,12 @@ struct AnnotationView: View {
 
                 closeAnnotationWindow()
 
-                let canUpload = !AppSettings.webdavURL.isEmpty && !AppSettings.webdavUsername.isEmpty && !AppSettings.webdavPassword.isEmpty
-                if uploadToWebDAV, canUpload {
+                if uploadToWebDAV, AppSettings.canUploadToCloud {
                     let fileName = url.lastPathComponent
                     Task { @MainActor in
                         appState.setTrayUploadStatus(.uploading(fileName: fileName))
                         do {
-                            let result = try await WebDAVUploader.shared.upload(
-                                fileURL: url,
-                                username: AppSettings.webdavUsername,
-                                password: AppSettings.webdavPassword
-                            )
+                            let result = try await WebDAVUploader.shared.upload(fileURL: url)
                             let link = result.publicURL ?? result.fileURL.absoluteString
                             UploadHistory.shared.add(result)
                             appState.setTrayUploadStatus(.success(fileName: result.fileName, link: link))

@@ -76,17 +76,12 @@ final class QuickCaptureService {
             return
         }
 
-        let canUpload = !AppSettings.webdavURL.isEmpty && !AppSettings.webdavUsername.isEmpty && !AppSettings.webdavPassword.isEmpty
-        let shouldUpload = (forceUpload ?? AppSettings.autoUploadToWebDAV) && canUpload
+        let shouldUpload = (forceUpload ?? AppSettings.autoUploadToWebDAV) && AppSettings.canUploadToCloud
         if shouldUpload {
             Task { @MainActor in
                 appState.setTrayUploadStatus(.uploading(fileName: name))
                 do {
-                    let result = try await WebDAVUploader.shared.upload(
-                        fileURL: url,
-                        username: AppSettings.webdavUsername,
-                        password: AppSettings.webdavPassword
-                    )
+                    let result = try await WebDAVUploader.shared.upload(fileURL: url)
                     UploadHistory.shared.add(result)
                     let link = result.publicURL ?? result.fileURL.absoluteString
                     appState.setTrayUploadStatus(.success(fileName: result.fileName, link: link))

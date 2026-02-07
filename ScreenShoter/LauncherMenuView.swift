@@ -1,4 +1,5 @@
 import SwiftUI
+import Sparkle
 
 struct LauncherMenuView: View {
     @ObservedObject var appState: AppState
@@ -118,6 +119,14 @@ struct LauncherMenuView: View {
                 Button { openWindow(id: "history") } label: { Text("История загрузок").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
                 Button { openWindow(id: "settings") } label: { Text("Настройки").frame(maxWidth: .infinity, alignment: .leading) }
+                    .buttonStyle(GlassButtonStyle())
+                Button {
+                    SPUStandardUpdaterController(
+                        startingUpdater: true,
+                        updaterDelegate: nil,
+                        userDriverDelegate: nil
+                    ).checkForUpdates(nil)
+                } label: { Text("Проверить обновления…").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
                 Button { NSApplication.shared.terminate(nil) } label: { Text("Выход").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())

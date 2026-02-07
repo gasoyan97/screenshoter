@@ -53,7 +53,7 @@ struct QuickOverlayView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.bordered)
-                .disabled(AppSettings.webdavURL.isEmpty || AppSettings.webdavUsername.isEmpty || AppSettings.webdavPassword.isEmpty)
+                .disabled(!AppSettings.canUploadToCloud)
 
                 Button {
                     closeOverlay()
