@@ -25,6 +25,8 @@ jobs:
     runs-on: macos-14
     permissions:
       contents: write
+      pages: write
+      id-token: write
 
     steps:
       - name: Checkout
@@ -178,3 +180,39 @@ jobs:
             ScreenShoter-${{ steps.version.outputs.version }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate appcast and deploy to Pages
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG="${{ github.ref_name }}"
+          BASE_URL="https://github.com/${{ github.repository }}/releases/download/$TAG"
+          mkdir -p updates
+          cp "ScreenShoter-$VERSION.zip" updates/
+          SPARKLE_VERSION="2.8.1"
+          curl -sL "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" -o sparkle.tar.xz
+          tar xf sparkle.tar.xz
+          mkdir -p pages
+          if [ -z "$SPARKLE_PRIVATE_KEY" ] || [ "$SPARKLE_PRIVATE_KEY" = "" ]; then
+            echo "::warning::SPARKLE_PRIVATE_KEY not set — appcast without signature"
+            ./bin/generate_appcast --download-url-prefix "$BASE_URL/" updates/ || ./bin/generate_appcast updates/
+          else
+            echo "$SPARKLE_PRIVATE_KEY" | tr -d '\n' | base64 -d | ./bin/generate_appcast --ed-key-file - --download-url-prefix "$BASE_URL/" updates/
+          fi
+          mv updates/appcast.xml pages/appcast.xml 2>/dev/null || true
+          [ -f pages/appcast.xml ] || { echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"><channel><title>ScreenShoter</title><description>Updates</description></channel></rss>" > pages/appcast.xml; }
+          cat pages/appcast.xml
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

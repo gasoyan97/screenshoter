@@ -1,15 +1,11 @@
-# Деплой минимального appcast на GitHub Pages.
-# Обеспечивает, что SUFeedURL всегда доступен — иначе Sparkle показывает
-# "An error occurred in retrieving update information".
-#
-# Запускается при push в main. Release workflow (при публикации релиза)
-# перезапишет appcast.xml полной версией.
+# Деплой минимального appcast на GitHub Pages (fallback).
+# Appcast генерируется в build-dmg.yml вместе со сборкой.
+# Этот workflow — только для ручного запуска, если нужно задеплоить пустой appcast.
 
 name: Deploy appcast
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
