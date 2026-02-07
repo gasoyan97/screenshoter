@@ -2,14 +2,13 @@ import SwiftUI
 
 struct LauncherMenuView: View {
     @ObservedObject var appState: AppState
-    @ObservedObject private var recordingService = ScreenRecordingService.shared
     @Binding var hasCheckedSetup: Bool
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         let _ = { AppState.current = appState }()
         VStack(spacing: 0) {
-            Text("ScreenShoter")
+            Text("app.name")
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -26,15 +25,15 @@ struct LauncherMenuView: View {
                 .padding(.horizontal, 12)
 
             VStack(spacing: 4) {
-                Button { capture(.full) } label: { Text("Вся область экрана").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { capture(.full) } label: { Text("menu.capture.full").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
-                Button { capture(.window) } label: { Text("Окно (с тенью)").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { capture(.window) } label: { Text("menu.capture.window").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
-                Button { capture(.region) } label: { Text("Выбранная область").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { capture(.region) } label: { Text("menu.capture.region").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
                 Button {
                     Task { await ScrollCaptureService.startScrollCapture(appState: appState) }
-                } label: { Text("Прокручиваемая область").frame(maxWidth: .infinity, alignment: .leading) }
+                } label: { Text("menu.capture.scroll").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
             }
             .padding(.horizontal, 12)
@@ -44,18 +43,18 @@ struct LauncherMenuView: View {
                 .opacity(0.5)
                 .padding(.horizontal, 12)
 
-            Text("С таймером")
+            Text("menu.with_timer")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 20)
                 .padding(.top, 4)
             VStack(spacing: 4) {
-                Button { capture(.full, delaySeconds: 3) } label: { Text("Вся область (3 с)").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { capture(.full, delaySeconds: 3) } label: { Text("menu.capture.full.3s").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
-                Button { capture(.full, delaySeconds: 5) } label: { Text("Вся область (5 с)").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { capture(.full, delaySeconds: 5) } label: { Text("menu.capture.full.5s").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
-                Button { capture(.full, delaySeconds: 10) } label: { Text("Вся область (10 с)").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { capture(.full, delaySeconds: 10) } label: { Text("menu.capture.full.10s").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
             }
             .padding(.horizontal, 12)
@@ -66,74 +65,46 @@ struct LauncherMenuView: View {
                 .opacity(0.5)
                 .padding(.horizontal, 12)
 
-            if recordingService.isRecording {
+            VStack(spacing: 4) {
+                Text("menu.screen_recording")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 4)
                 Button {
-                    Task { await recordingService.stopRecording(appState: appState) }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "stop.circle.fill")
-                            .foregroundStyle(.red)
-                        Text("Остановить запись")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-                .buttonStyle(GlassButtonStyle())
-                .padding(.horizontal, 12)
-                .padding(.vertical, 4)
-            } else {
-                VStack(spacing: 4) {
-                    Text("Запись экрана")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 20)
-                        .padding(.top, 4)
-                    Button {
-                        Task {
-                            do {
-                                try await recordingService.startRecording()
-                            } catch {
-                                await MainActor.run { NSApp.activate(ignoringOtherApps: true) }
-                            }
-                        }
-                    } label: { Text("Записать экран").frame(maxWidth: .infinity, alignment: .leading) }
-                        .buttonStyle(GlassButtonStyle())
-                    if recordingService.lastRecordedVideoURL != nil {
-                        Button {
-                            Task { await Self.exportLastRecordingAsGIF(appState: appState) }
-                        } label: { Text("Экспорт последней записи в GIF").frame(maxWidth: .infinity, alignment: .leading) }
-                            .buttonStyle(GlassButtonStyle())
-                    }
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 4)
-                .padding(.bottom, 4)
+                    Task { @MainActor in RecordingStubService.showStub() }
+                } label: { Text("menu.record_screen").frame(maxWidth: .infinity, alignment: .leading) }
+                    .buttonStyle(GlassButtonStyle())
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 4)
+            .padding(.bottom, 4)
 
             Divider()
                 .opacity(0.5)
                 .padding(.horizontal, 12)
 
             VStack(spacing: 4) {
-                Button { openWindow(id: "history") } label: { Text("История загрузок").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { openWindow(id: "history") } label: { Text("menu.upload_history").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
-                Button { openWindow(id: "settings") } label: { Text("Настройки").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { openWindow(id: "settings") } label: { Text("menu.settings").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
                 Button {
                     SparkleUpdater.checkForUpdates()
-                } label: { Text("Проверить обновления…").frame(maxWidth: .infinity, alignment: .leading) }
+                } label: { Text("menu.check_updates").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
                 Button {
                     var components = URLComponents()
                     components.scheme = "mailto"
                     components.path = "work@gasoyan.ru"
-                    components.queryItems = [URLQueryItem(name: "subject", value: "есть идея по приложению")]
+                    components.queryItems = [URLQueryItem(name: "subject", value: String(localized: "mail.subject"))]
                     if let url = components.url {
                         NSWorkspace.shared.open(url)
                     }
-                } label: { Text("Написать автору").frame(maxWidth: .infinity, alignment: .leading) }
+                } label: { Text("menu.contact_author").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
-                Button { NSApplication.shared.terminate(nil) } label: { Text("Выход").frame(maxWidth: .infinity, alignment: .leading) }
+                Button { NSApplication.shared.terminate(nil) } label: { Text("menu.quit").frame(maxWidth: .infinity, alignment: .leading) }
                     .buttonStyle(GlassButtonStyle())
             }
             .padding(.horizontal, 12)
@@ -156,13 +127,7 @@ struct LauncherMenuView: View {
                 withEditing: { Task { @MainActor in await Self.captureWithEditing(appState: appState, openWindow: openWindow) } },
                 withoutEditing: { Task { @MainActor in await QuickCaptureService.shared.captureAndSave(appState: appState) } },
                 recording: {
-                    Task { @MainActor in
-                        if ScreenRecordingService.shared.isRecording {
-                            await ScreenRecordingService.shared.stopRecording(appState: appState)
-                        } else {
-                            try? await ScreenRecordingService.shared.startRecording()
-                        }
-                    }
+                    Task { @MainActor in RecordingStubService.showStub() }
                 }
             )
             HotkeyManager.shared.start()
@@ -179,7 +144,7 @@ struct LauncherMenuView: View {
                 HStack(spacing: 8) {
                     ProgressView()
                         .scaleEffect(0.8)
-                    Text("Загрузка \(fileName)")
+                    Text("menu.uploading \(fileName)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
@@ -192,7 +157,7 @@ struct LauncherMenuView: View {
                 HStack(spacing: 6) {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(.green)
-                    Text("Загружено: \(fileName)")
+                    Text("menu.uploaded \(fileName)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
@@ -216,18 +181,6 @@ struct LauncherMenuView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color.red.opacity(0.08))
                 .onTapGesture { appState.trayUploadStatus = .idle }
-            }
-        }
-    }
-
-    /// Экспорт последней записи в GIF и уведомление пользователя.
-    private static func exportLastRecordingAsGIF(appState: AppState) async {
-        guard let url = ScreenRecordingService.shared.lastRecordedVideoURL else { return }
-        guard FileManager.default.fileExists(atPath: url.path) else { return }
-        if let gifURL = await GifExportService.exportVideoToGIF(videoURL: url) {
-            await MainActor.run {
-                NSApp.activate(ignoringOtherApps: true)
-                NSWorkspace.shared.activateFileViewerSelecting([gifURL])
             }
         }
     }

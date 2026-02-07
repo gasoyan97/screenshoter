@@ -1,0 +1,191 @@
+/* App */
+"app.name" = "ScreenShoter";
+
+/* Launcher menu */
+"menu.capture.full" = "Full screen";
+"menu.capture.window" = "Window (with shadow)";
+"menu.capture.region" = "Selected region";
+"menu.capture.scroll" = "Scrollable area";
+"menu.with_timer" = "With timer";
+"menu.capture.full.3s" = "Full screen (3 s)";
+"menu.capture.full.5s" = "Full screen (5 s)";
+"menu.capture.full.10s" = "Full screen (10 s)";
+"menu.stop_recording" = "Stop recording";
+"menu.screen_recording" = "Screen recording";
+"menu.record_screen" = "Record screen";
+"menu.export_last_gif" = "Export last recording as GIF";
+"menu.upload_history" = "Upload history";
+"menu.settings" = "Settings";
+"menu.check_updates" = "Check for updates…";
+"menu.contact_author" = "Contact author";
+"menu.quit" = "Quit";
+"menu.uploading %@" = "Uploading %@";
+"menu.uploaded %@" = "Uploaded: %@";
+
+/* Setup */
+"setup.welcome.desc" = "Quick screenshots from the menu bar: full screen, window, or selected region. Annotations and cloud upload.";
+"setup.permissions" = "Permissions";
+"setup.notifications" = "Notifications";
+"setup.notifications.desc" = "The app shows a notification when a screenshot is uploaded to the cloud (WebDAV).";
+"setup.allow_notifications" = "Allow notifications";
+"setup.allowed" = "Allowed";
+"setup.denied_hint" = "Denied — enable in System Settings → Notifications";
+"setup.screen_recording" = "Screen recording";
+"setup.screen_recording.desc" = "For screenshot of a selected region, macOS will request screen recording access. Add ScreenShoter to the list.";
+"setup.open_privacy" = "Open System Settings → Privacy & Security → Screen Recording";
+"setup.autostart" = "Launch at login";
+"setup.autostart.desc" = "Launch ScreenShoter at login — the icon will always appear in the menu bar.";
+"setup.shortcuts" = "Keyboard shortcuts";
+"setup.shortcuts.desc" = "To open the menu: click the icon in the menu bar (near the clock). To assign your own shortcut, open System Settings → Keyboard → Keyboard Shortcuts → App Shortcuts.";
+"setup.open_keyboard" = "Open keyboard settings";
+"setup.cloud" = "Cloud (optional)";
+"setup.cloud.desc" = "Upload screenshots to Yandex.Disk. You can connect later in Settings.";
+"setup.connect_yandex" = "Connect Yandex.Disk";
+"setup.connect_yandex.hint" = "A browser will open. Sign in, tap Allow, and paste the code from the page below.";
+"setup.code_from_page" = "Code from page";
+"setup.get_token" = "Get token";
+"setup.getting" = "Getting…";
+"setup.yandex_connected" = "Yandex.Disk connected";
+"setup.yandex_not_configured" = "App is not configured for Yandex.Disk connection.";
+"setup.client_secret_hint" = "Specify Client secret in YandexOAuthConfig and rebuild the app.";
+"setup.upload_after_save" = "Upload to cloud after saving";
+"setup.done" = "All set";
+"setup.done.desc" = "Tap Done — the ScreenShoter icon will appear in the menu bar. Click it to open the capture type menu.";
+"setup.back" = "Back";
+"setup.next" = "Next";
+"setup.start" = "Start";
+"setup.finish" = "Finish";
+"setup.done_btn" = "Done";
+
+/* Settings */
+"settings.save_folder" = "Save location";
+"settings.not_selected" = "Not selected";
+"settings.choose" = "Choose…";
+"settings.format" = "File format";
+"settings.compression" = "Image compression";
+"settings.scale_retina" = "Scale down Retina (2x → 1x)";
+"settings.section_save" = "Saving";
+"settings.section_save.footer" = "Default folder is used in the save dialog. Format: PNG or JPEG. Compression affects JPEG: None = max quality, Medium = balance, Strong = smaller size. Scale Retina reduces file size like CleanShot.";
+"settings.quick_overlay" = "After capture: quick overlay";
+"settings.hide_desktop_icons" = "Hide desktop icons when capturing";
+"settings.crosshair_region" = "Crosshair mode for region selection";
+"settings.section_capture" = "Capture";
+"settings.section_capture.footer" = "If enabled, after capture you'll see a compact panel (Save / Copy / Upload / Edit) instead of the full annotation window. Hide icons temporarily hides desktop icons. Crosshair mode shows a center crosshair when selecting a region.";
+"settings.like_screenshots" = "Same as screenshots";
+"settings.reset" = "Reset";
+"settings.upload_video_after" = "Upload video to cloud after recording";
+"settings.section_video" = "Screen recording";
+"settings.section_video.footer" = "Folder for saving videos. If not set, uses the screenshot folder.";
+"settings.launch_at_login" = "Launch at login";
+"settings.section_autostart" = "Launch at login";
+"settings.section_autostart.footer" = "ScreenShoter will appear in the menu bar on every macOS login.";
+"settings.allow_notifications" = "Allow notifications";
+"settings.open_settings" = "Open settings";
+"settings.notification_not_requested" = "Permission not requested";
+"settings.notification_denied" = "Notifications disabled";
+"settings.notification_enabled" = "Notifications enabled";
+"settings.section_notifications" = "Notifications";
+"settings.section_notifications.footer" = "Notification is shown after uploading a screenshot to the cloud.";
+"settings.shortcut_with_editing" = "Screenshot with editing";
+"settings.shortcut_without_editing" = "Screenshot without editing";
+"settings.shortcut_recording" = "Screen recording";
+"settings.change" = "Change";
+"settings.section_shortcuts" = "Keyboard shortcuts";
+"settings.section_shortcuts.footer" = "Global shortcuts (work when app is in background). Default: ⌘⇧E — with editing, ⌘⇧S — save and upload. Requires Accessibility permission in System Settings.";
+"settings.upload_after_save" = "Upload to cloud after saving";
+"settings.yandex_not_configured" = "App is not configured for Yandex.Disk connection.";
+"settings.dev_instructions" = "Developer instructions";
+"settings.client_secret_hint" = "Add Client secret in YandexOAuthConfig.swift (copy from oauth.yandex.ru) and rebuild.";
+"settings.connect_yandex" = "Connect Yandex.Disk";
+"settings.connect_hint" = "Tap the button — a browser will open. Sign in, tap Allow, then copy the code from the page and paste below.";
+"settings.code_from_page" = "Code from page";
+"settings.get_token" = "Get token";
+"settings.getting" = "Getting…";
+"settings.yandex_connected" = "Yandex.Disk connected";
+"settings.disconnect" = "Disconnect";
+"settings.test_connection" = "Test connection";
+"settings.testing" = "Testing…";
+"settings.section_yandex" = "Yandex.Disk";
+"settings.section_yandex.footer" = "Tap Connect Yandex.Disk — sign in and tap Allow. Files are saved to ScreenShoter_mac folder.";
+"settings.wallpaper_preset" = "Wallpaper preset";
+"settings.none" = "None";
+"settings.use_mac_wallpaper" = "Use Mac desktop wallpaper";
+"settings.padding_h" = "Left & right padding";
+"settings.padding_v" = "Top & bottom padding";
+"settings.delete" = "Delete";
+"settings.section_wallpaper" = "Screenshot wallpapers";
+"settings.section_wallpaper.footer" = "Screenshot will be placed on wallpaper when saving. Padding is the distance from wallpaper edges to screenshot (S–XXL, 20–150 pt).";
+"settings.check_updates" = "Check for updates…";
+"settings.contact_author" = "Contact author";
+"settings.section_updates" = "Updates";
+"settings.section_updates.footer" = "Check for new ScreenShoter version. Have an idea? Contact the developer.";
+"settings.token_received" = "Token received and saved.";
+"settings.connection_ok" = "Connection successful.";
+"settings.success_keywords" = "success";
+
+/* Formats */
+"format.png" = "PNG";
+"format.jpeg" = "JPEG";
+"format.compression.none" = "None";
+"format.compression.medium" = "Medium";
+"format.compression.strong" = "Strong";
+
+/* Wallpaper presets */
+"wallpaper.none" = "None";
+"wallpaper.gradient_light" = "Light gradient";
+"wallpaper.gradient_dark" = "Dark gradient";
+"wallpaper.gradient_blue" = "Blue gradient";
+"wallpaper.gradient_warm" = "Warm gradient";
+"wallpaper.texture_paper" = "Paper texture";
+
+/* History */
+"history.title" = "Upload history";
+"history.empty" = "No uploads yet";
+"history.open" = "Open";
+"history.copy" = "Copy";
+"history.link_not_received" = "Link not received";
+
+/* Annotation */
+"annotation.upload_after_save" = "Upload after saving";
+"annotation.copy" = "Copy to clipboard";
+"annotation.ocr" = "OCR and copy to clipboard";
+"annotation.pin" = "Pin above all windows";
+"annotation.unpin" = "Unpin window";
+"annotation.save" = "Save";
+"annotation.text_not_recognized" = "Text not recognized";
+"annotation.ocr_failed" = "Could not recognize text on the image.";
+"annotation.error" = "Error";
+
+/* Quick overlay */
+"overlay.save" = "Save";
+"overlay.copy" = "Copy";
+"overlay.upload" = "Upload";
+"overlay.edit" = "Edit";
+
+/* Window titles (for matching) */
+"window.annotations" = "Annotations";
+"window.setup" = "Setup";
+"window.history" = "History";
+"window.settings" = "Settings";
+"window.quick_overlay" = "Quick overlay";
+"window.annotation_title" = "ScreenShoter — Annotations";
+"window.overlay_title" = "ScreenShoter — Quick overlay";
+"window.setup_title" = "Setup";
+"window.history_title" = "Upload history";
+"window.settings_title" = "Settings";
+
+/* Notifications */
+"notification.upload_complete" = "Upload complete";
+
+/* Mail */
+"mail.subject" = "I have an idea for the app";
+
+/* WebDAV errors */
+"error.invalid_url" = "Invalid or unsupported URL. Check URL in settings (must start with https://).";
+
+/* Stubs (feature in development) */
+"stub.ok" = "OK";
+"stub.scroll.title" = "Scrollable area";
+"stub.scroll.message" = "Feature in development. In the next version you will be able to capture long content (chats, code) with automatic scrolling and stitching into one image.";
+"stub.recording.title" = "Screen recording";
+"stub.recording.message" = "Feature in development. Video recording will be available in a future version.";

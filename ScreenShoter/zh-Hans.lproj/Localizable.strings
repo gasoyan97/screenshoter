@@ -1,0 +1,191 @@
+/* App */
+"app.name" = "ScreenShoter";
+
+/* Launcher menu */
+"menu.capture.full" = "整个屏幕";
+"menu.capture.window" = "窗口（带阴影）";
+"menu.capture.region" = "选定区域";
+"menu.capture.scroll" = "可滚动区域";
+"menu.with_timer" = "带计时器";
+"menu.capture.full.3s" = "整个屏幕（3 秒）";
+"menu.capture.full.5s" = "整个屏幕（5 秒）";
+"menu.capture.full.10s" = "整个屏幕（10 秒）";
+"menu.stop_recording" = "停止录制";
+"menu.screen_recording" = "屏幕录制";
+"menu.record_screen" = "录制屏幕";
+"menu.export_last_gif" = "导出最后录制的 GIF";
+"menu.upload_history" = "上传历史";
+"menu.settings" = "设置";
+"menu.check_updates" = "检查更新…";
+"menu.contact_author" = "联系作者";
+"menu.quit" = "退出";
+"menu.uploading %@" = "正在上传 %@";
+"menu.uploaded %@" = "已上传：%@";
+
+/* Setup */
+"setup.welcome.desc" = "从菜单栏快速截图：整个屏幕、窗口或选定区域。支持批注和云端上传。";
+"setup.permissions" = "权限";
+"setup.notifications" = "通知";
+"setup.notifications.desc" = "当截图上传到云端（WebDAV）时，应用会显示通知。";
+"setup.allow_notifications" = "允许通知";
+"setup.allowed" = "已允许";
+"setup.denied_hint" = "已拒绝 — 请在「系统设置」→ 通知中启用";
+"setup.screen_recording" = "屏幕录制";
+"setup.screen_recording.desc" = "截取选定区域时，macOS 会请求屏幕录制权限。请在列表中启用 ScreenShoter。";
+"setup.open_privacy" = "打开「系统设置」→ 隐私与安全性 → 屏幕录制";
+"setup.autostart" = "自动启动";
+"setup.autostart.desc" = "登录时启动 ScreenShoter — 图标将始终显示在菜单栏中。";
+"setup.shortcuts" = "快捷键";
+"setup.shortcuts.desc" = "打开菜单：点击菜单栏中的图标（时钟旁）。要自定义快捷键，请打开「系统设置」→ 键盘 → 键盘快捷键 → 应用快捷键。";
+"setup.open_keyboard" = "打开键盘设置";
+"setup.cloud" = "云端（可选）";
+"setup.cloud.desc" = "上传截图到 Yandex.Disk。可稍后在设置中连接。";
+"setup.connect_yandex" = "连接 Yandex.Disk";
+"setup.connect_yandex.hint" = "将打开浏览器。登录后点击「允许」，然后将页面上的代码粘贴到下方。";
+"setup.code_from_page" = "页面上的代码";
+"setup.get_token" = "获取令牌";
+"setup.getting" = "获取中…";
+"setup.yandex_connected" = "Yandex.Disk 已连接";
+"setup.yandex_not_configured" = "应用未配置 Yandex.Disk 连接。";
+"setup.client_secret_hint" = "请在 YandexOAuthConfig 中指定 Client secret 并重新构建应用。";
+"setup.upload_after_save" = "保存后上传到云端";
+"setup.done" = "全部完成";
+"setup.done.desc" = "点击「完成」— ScreenShoter 图标将出现在菜单栏中。点击可打开截图类型菜单。";
+"setup.back" = "返回";
+"setup.next" = "下一步";
+"setup.start" = "开始";
+"setup.finish" = "完成";
+"setup.done_btn" = "完成";
+
+/* Settings */
+"settings.save_folder" = "保存位置";
+"settings.not_selected" = "未选择";
+"settings.choose" = "选择…";
+"settings.format" = "文件格式";
+"settings.compression" = "图像压缩";
+"settings.scale_retina" = "缩小 Retina（2x → 1x）";
+"settings.section_save" = "保存";
+"settings.section_save.footer" = "默认文件夹用于保存对话框。格式：PNG 或 JPEG。压缩影响 JPEG：无 = 最高质量，中等 = 平衡，强 = 更小体积。缩小 Retina 可减小文件大小，类似 CleanShot。";
+"settings.quick_overlay" = "截取后：快速叠加层";
+"settings.hide_desktop_icons" = "截取时隐藏桌面图标";
+"settings.crosshair_region" = "区域选择时的准星模式";
+"settings.section_capture" = "截取";
+"settings.section_capture.footer" = "启用后，截取后会显示紧凑面板（保存/复制/上传/编辑）而非完整批注窗口。隐藏图标可临时隐藏桌面图标。准星模式在选择区域时显示中心准星。";
+"settings.like_screenshots" = "与截图相同";
+"settings.reset" = "重置";
+"settings.upload_video_after" = "录制后上传视频到云端";
+"settings.section_video" = "屏幕录制";
+"settings.section_video.footer" = "保存视频的文件夹。未选择则使用截图文件夹。";
+"settings.launch_at_login" = "登录时启动";
+"settings.section_autostart" = "自动启动";
+"settings.section_autostart.footer" = "ScreenShoter 将在每次 macOS 登录时出现在菜单栏中。";
+"settings.allow_notifications" = "允许通知";
+"settings.open_settings" = "打开设置";
+"settings.notification_not_requested" = "未请求权限";
+"settings.notification_denied" = "通知已关闭";
+"settings.notification_enabled" = "通知已开启";
+"settings.section_notifications" = "通知";
+"settings.section_notifications.footer" = "截图上传到云端后会显示通知。";
+"settings.shortcut_with_editing" = "带编辑的截图";
+"settings.shortcut_without_editing" = "不带编辑的截图";
+"settings.shortcut_recording" = "屏幕录制";
+"settings.change" = "更改";
+"settings.section_shortcuts" = "快捷键";
+"settings.section_shortcuts.footer" = "全局快捷键（应用在后台时有效）。默认：⌘⇧E — 带编辑，⌘⇧S — 保存并上传。需在系统设置中授予「辅助功能」权限。";
+"settings.upload_after_save" = "保存后上传到云端";
+"settings.yandex_not_configured" = "应用未配置 Yandex.Disk 连接。";
+"settings.dev_instructions" = "开发者说明";
+"settings.client_secret_hint" = "在 YandexOAuthConfig.swift 中添加 Client secret（从 oauth.yandex.ru 复制）并重新构建。";
+"settings.connect_yandex" = "连接 Yandex.Disk";
+"settings.connect_hint" = "点击按钮 — 将打开浏览器。登录后点击「允许」，然后将页面上的代码粘贴到下方。";
+"settings.code_from_page" = "页面上的代码";
+"settings.get_token" = "获取令牌";
+"settings.getting" = "获取中…";
+"settings.yandex_connected" = "Yandex.Disk 已连接";
+"settings.disconnect" = "断开连接";
+"settings.test_connection" = "测试连接";
+"settings.testing" = "测试中…";
+"settings.section_yandex" = "Yandex.Disk";
+"settings.section_yandex.footer" = "点击「连接 Yandex.Disk」— 登录后点击「允许」。文件将保存到 ScreenShoter_mac 文件夹。";
+"settings.wallpaper_preset" = "壁纸预设";
+"settings.none" = "无";
+"settings.use_mac_wallpaper" = "使用 Mac 桌面壁纸";
+"settings.padding_h" = "左右边距";
+"settings.padding_v" = "上下边距";
+"settings.delete" = "删除";
+"settings.section_wallpaper" = "截图壁纸";
+"settings.section_wallpaper.footer" = "保存时截图将叠加在壁纸上。边距为壁纸边缘到截图的距离（S–XXL，20–150 pt）。";
+"settings.check_updates" = "检查更新…";
+"settings.contact_author" = "联系作者";
+"settings.section_updates" = "更新";
+"settings.section_updates.footer" = "检查 ScreenShoter 新版本。有想法？联系开发者。";
+"settings.token_received" = "令牌已获取并保存。";
+"settings.connection_ok" = "连接成功。";
+"settings.success_keywords" = "成功";
+
+/* Formats */
+"format.png" = "PNG";
+"format.jpeg" = "JPEG";
+"format.compression.none" = "无";
+"format.compression.medium" = "中等";
+"format.compression.strong" = "强";
+
+/* Wallpaper presets */
+"wallpaper.none" = "无";
+"wallpaper.gradient_light" = "浅色渐变";
+"wallpaper.gradient_dark" = "深色渐变";
+"wallpaper.gradient_blue" = "蓝色渐变";
+"wallpaper.gradient_warm" = "暖色渐变";
+"wallpaper.texture_paper" = "纸张纹理";
+
+/* History */
+"history.title" = "上传历史";
+"history.empty" = "暂无上传";
+"history.open" = "打开";
+"history.copy" = "复制";
+"history.link_not_received" = "未获取链接";
+
+/* Annotation */
+"annotation.upload_after_save" = "保存后上传";
+"annotation.copy" = "复制到剪贴板";
+"annotation.ocr" = "OCR 识别并复制到剪贴板";
+"annotation.pin" = "置于所有窗口之上";
+"annotation.unpin" = "取消置顶";
+"annotation.save" = "保存";
+"annotation.text_not_recognized" = "文本未识别";
+"annotation.ocr_failed" = "无法识别图像上的文本。";
+"annotation.error" = "错误";
+
+/* Quick overlay */
+"overlay.save" = "保存";
+"overlay.copy" = "复制";
+"overlay.upload" = "上传";
+"overlay.edit" = "编辑";
+
+/* Window titles (for matching) */
+"window.annotations" = "批注";
+"window.setup" = "设置向导";
+"window.history" = "历史";
+"window.settings" = "设置";
+"window.quick_overlay" = "快速叠加层";
+"window.annotation_title" = "ScreenShoter — 批注";
+"window.overlay_title" = "ScreenShoter — 快速叠加层";
+"window.setup_title" = "设置向导";
+"window.history_title" = "上传历史";
+"window.settings_title" = "设置";
+
+/* Notifications */
+"notification.upload_complete" = "上传完成";
+
+/* Mail */
+"mail.subject" = "对应用有建议";
+
+/* WebDAV errors */
+"error.invalid_url" = "无效或不支持的 URL。请在设置中检查 URL（必须以 https:// 开头）。";
+
+/* Stubs (feature in development) */
+"stub.ok" = "确定";
+"stub.scroll.title" = "可滚动区域";
+"stub.scroll.message" = "功能开发中。下一版本将支持自动滚动并拼接成长图的截取功能（聊天、代码等）。";
+"stub.recording.title" = "屏幕录制";
+"stub.recording.message" = "功能开发中。视频录制将在未来版本中提供。";

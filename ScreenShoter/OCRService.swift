@@ -1,6 +1,6 @@
 import Foundation
 import AppKit
-import Vision
+@preconcurrency import Vision
 
 /// Распознавание текста с изображения (OCR) через Vision. Копирование в буфер обмена.
 enum OCRService {

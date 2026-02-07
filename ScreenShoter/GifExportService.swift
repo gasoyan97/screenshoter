@@ -22,7 +22,7 @@ enum GifExportService {
         generator.requestedTimeToleranceBefore = .zero
         generator.requestedTimeToleranceAfter = CMTime(seconds: 0.1, preferredTimescale: 600)
 
-        let duration = asset.duration
+        guard let duration = try? await asset.load(.duration) else { return nil }
         let totalSeconds = CMTimeGetSeconds(duration)
         let frameCount = min(maxFrames, max(1, Int(totalSeconds * targetFPS)))
         guard frameCount > 0 else { return nil }

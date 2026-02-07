@@ -1,8 +1,12 @@
 # Сборка ScreenShoter в DMG и публикация в Release
 #
-# Запуск: создайте и запушьте тег v* (например v0.0.2)
-#   git tag v0.0.2
-#   git push origin v0.0.2
+# Trunk base: для каждого релиза создаётся ветка release/X.Y.Z, сборка идёт из неё.
+#
+# Запуск: создайте и запушьте тег v* (например v0.0.5)
+#   git tag v0.0.5
+#   git push origin v0.0.5
+#
+# Workflow создаст ветку release/0.0.5 от тега и соберёт из неё.
 #
 # Работает БЕЗ Apple Developer Program — создаёт DMG для размещения на своём сайте.
 # Пользователям при первом запуске: правый клик → Открыть (из-за Gatekeeper).
@@ -25,13 +29,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - name: Set version from tag
         id: version
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "release_branch=release/$VERSION" >> $GITHUB_OUTPUT
           echo "Building version $VERSION"
+
+      - name: Create and push release branch
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          RELEASE_BRANCH="release/$VERSION"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$RELEASE_BRANCH"
+          git push -u origin "$RELEASE_BRANCH"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Info.plist version
         run: |

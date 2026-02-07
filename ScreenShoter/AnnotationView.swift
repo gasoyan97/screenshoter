@@ -127,7 +127,7 @@ struct AnnotationView: View {
 
             Spacer()
 
-            Toggle("Загрузить после сохранения", isOn: $uploadToWebDAV)
+            Toggle("annotation.upload_after_save", isOn: $uploadToWebDAV)
                 .toggleStyle(.checkbox)
 
             Button {
@@ -137,7 +137,7 @@ struct AnnotationView: View {
                     .font(.system(size: 14, weight: .medium))
             }
             .buttonStyle(.bordered)
-            .help("Копировать в буфер обмена")
+            .help("annotation.copy")
 
             Button {
                 Task {
@@ -145,8 +145,8 @@ struct AnnotationView: View {
                     await MainActor.run {
                         if !ok {
                             let alert = NSAlert()
-                            alert.messageText = "Текст не распознан"
-                            alert.informativeText = "Не удалось распознать текст на изображении."
+                            alert.messageText = String(localized: "annotation.text_not_recognized")
+                            alert.informativeText = String(localized: "annotation.ocr_failed")
                             alert.alertStyle = .informational
                             alert.runModal()
                         }
@@ -157,7 +157,7 @@ struct AnnotationView: View {
                     .font(.system(size: 14, weight: .medium))
             }
             .buttonStyle(.bordered)
-            .help("Распознать текст (OCR) и скопировать в буфер")
+            .help("annotation.ocr")
 
             Button {
                 togglePin()
@@ -166,9 +166,9 @@ struct AnnotationView: View {
                     .font(.system(size: 14, weight: .medium))
             }
             .buttonStyle(.bordered)
-            .help(isPinned ? "Открепить окно" : "Закрепить поверх всех окон")
+            .help(isPinned ? String(localized: "annotation.unpin") : String(localized: "annotation.pin"))
 
-            Button("Сохранить") { save() }
+            Button("annotation.save") { save() }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
         }
@@ -557,12 +557,12 @@ struct AnnotationView: View {
 
     private func closeAnnotationWindow() {
         DispatchQueue.main.async {
-            NSApp.windows.first(where: { $0.title.contains("Аннотации") })?.close()
+            NSApp.windows.first(where: { $0.title.contains(String(localized: "window.annotations")) })?.close()
         }
     }
 
     private func togglePin() {
-        guard let window = NSApp.windows.first(where: { $0.title.contains("Аннотации") }) else { return }
+        guard let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.annotations")) }) else { return }
         isPinned.toggle()
         if isPinned {
             window.level = .floating
@@ -611,7 +611,7 @@ struct AnnotationView: View {
                 }
             } catch {
                 let alert = NSAlert()
-                alert.messageText = "Ошибка"
+                alert.messageText = String(localized: "annotation.error")
                 alert.informativeText = error.localizedDescription
                 alert.alertStyle = .critical
                 alert.runModal()

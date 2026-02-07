@@ -3,7 +3,13 @@ import AppKit
 
 /// Иконка в Dock только когда открыто окно приложения (аннотации, настройки, установка, история). Без окон — только меню в баре.
 private func updateDockVisibility() {
-    let mainTitles = ["Аннотации", "Установка", "История", "Настройки", "Быстрый оверлей"]
+    let mainTitles = [
+        String(localized: "window.annotations"),
+        String(localized: "window.setup"),
+        String(localized: "window.history"),
+        String(localized: "window.settings"),
+        String(localized: "window.quick_overlay")
+    ]
     let hasWindow = NSApp.windows.contains { w in
         w.isVisible && mainTitles.contains(where: { w.title.contains($0) })
     }
@@ -31,13 +37,13 @@ struct ScreenShoterApp: App {
         }
         .menuBarExtraStyle(.window)
 
-        Window("ScreenShoter — Аннотации", id: "annotation") {
+        Window(String(localized: "window.annotation_title"), id: "annotation") {
             if let image = appState.capturedImage {
                 AnnotationView(image: image, appState: appState)
                     .id(appState.annotationImageId)
                     .onAppear {
                         DispatchQueue.main.async {
-                            if let window = NSApp.windows.first(where: { $0.title.contains("Аннотации") }) {
+                            if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.annotations")) }) {
                                 window.level = .normal
                                 window.collectionBehavior = [.managed, .participatesInCycle]
                             }
@@ -51,12 +57,12 @@ struct ScreenShoterApp: App {
         .defaultSize(width: 1000, height: 700)
         .commandsRemoved()
 
-        Window("ScreenShoter — Быстрый оверлей", id: "quickOverlay") {
+        Window(String(localized: "window.overlay_title"), id: "quickOverlay") {
             if let image = appState.capturedImage {
                 QuickOverlayView(image: image, appState: appState)
                     .onAppear {
                         DispatchQueue.main.async {
-                            if let window = NSApp.windows.first(where: { $0.title.contains("Быстрый оверлей") }) {
+                            if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.quick_overlay")) }) {
                                 window.level = .floating
                                 window.collectionBehavior = [.managed, .participatesInCycle]
                                 window.isMovableByWindowBackground = true
@@ -72,11 +78,11 @@ struct ScreenShoterApp: App {
         .windowResizability(.contentSize)
         .commandsRemoved()
 
-        Window("Установка", id: "setup") {
+        Window(String(localized: "window.setup_title"), id: "setup") {
             SetupView()
                 .onAppear {
                     DispatchQueue.main.async {
-                        if let window = NSApp.windows.first(where: { $0.title.contains("Установка") }) {
+                            if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.setup")) }) {
                             window.level = .floating
                             window.collectionBehavior = [.managed, .participatesInCycle]
                             window.isMovableByWindowBackground = true
@@ -89,11 +95,11 @@ struct ScreenShoterApp: App {
         .windowResizability(.contentSize)
         .defaultSize(width: 520, height: 520)
 
-        Window("История загрузок", id: "history") {
+        Window(String(localized: "window.history_title"), id: "history") {
             HistoryView()
                 .onAppear {
                     DispatchQueue.main.async {
-                        if let window = NSApp.windows.first(where: { $0.title.contains("История") }) {
+                        if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.history")) }) {
                             window.level = .normal
                             window.collectionBehavior = [.managed, .participatesInCycle]
                             window.isMovableByWindowBackground = true
@@ -106,11 +112,11 @@ struct ScreenShoterApp: App {
         .windowResizability(.contentSize)
         .defaultSize(width: 600, height: 500)
         
-        Window("Настройки", id: "settings") {
+        Window(String(localized: "window.settings_title"), id: "settings") {
             SettingsView()
                 .onAppear {
                     DispatchQueue.main.async {
-                        if let window = NSApp.windows.first(where: { $0.title.contains("Настройки") }) {
+                        if let window = NSApp.windows.first(where: { $0.title.contains(String(localized: "window.settings")) }) {
                             window.level = .normal
                             window.collectionBehavior = [.managed, .participatesInCycle]
                             window.isMovableByWindowBackground = true

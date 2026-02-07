@@ -5,16 +5,29 @@ enum ScreenshotFormat: String, CaseIterable, Identifiable {
     case png = "PNG"
     case jpeg = "JPEG"
     var id: String { rawValue }
+    var localizedLabel: String {
+        switch self {
+        case .png: return String(localized: "format.png")
+        case .jpeg: return String(localized: "format.jpeg")
+        }
+    }
     var fileExtension: String { rawValue.lowercased() }
     var utType: String { self == .png ? "public.png" : "public.jpeg" }
 }
 
 /// Степень сжатия JPEG: нет = max качество, среднее = баланс, сильное = меньший размер.
 enum CompressionLevel: String, CaseIterable, Identifiable {
-    case none = "Нет"
-    case medium = "Среднее"
-    case strong = "Сильное"
+    case none = "none"
+    case medium = "medium"
+    case strong = "strong"
     var id: String { rawValue }
+    var localizedLabel: String {
+        switch self {
+        case .none: return String(localized: "format.compression.none")
+        case .medium: return String(localized: "format.compression.medium")
+        case .strong: return String(localized: "format.compression.strong")
+        }
+    }
     var jpegQuality: CGFloat {
         switch self {
         case .none: return 1.0
@@ -47,9 +60,14 @@ enum AppSettings {
 
     static var compressionLevel: CompressionLevel {
         get {
-            guard let raw = defaults.string(forKey: "compressionLevel"),
-                  let c = CompressionLevel(rawValue: raw) else { return .medium }
-            return c
+            guard let raw = defaults.string(forKey: "compressionLevel") else { return .medium }
+            if let c = CompressionLevel(rawValue: raw) { return c }
+            // Migration from legacy localized raw values
+            switch raw {
+            case "Нет", "None", "无": return .none
+            case "Сильное", "Strong", "强": return .strong
+            default: return .medium
+            }
         }
         set { defaults.set(newValue.rawValue, forKey: "compressionLevel") }
     }
@@ -78,6 +96,7 @@ enum AppSettings {
         case l = "L"
         case xxl = "XXL"
         var id: String { rawValue }
+        var localizedLabel: String { "\(rawValue) (\(Int(points)) pt)" }
         var points: CGFloat {
             switch self {
             case .s: return 20
@@ -86,7 +105,7 @@ enum AppSettings {
             case .xxl: return 150
             }
         }
-        var label: String { "\(rawValue) (\(Int(points)) pt)" }
+        var label: String { localizedLabel }
     }
     static var wallpaperPaddingPreset: WallpaperPaddingPreset {
         get {
@@ -110,9 +129,21 @@ enum AppSettings {
     /// Готовый фон (градиент, текстура). nil или .none = не использовать пресет (обои Mac или свой файл).
     static var wallpaperPreset: WallpaperPreset? {
         get {
-            guard let raw = defaults.string(forKey: "wallpaperPreset"), !raw.isEmpty, raw != WallpaperPreset.none.rawValue,
-                  let p = WallpaperPreset(rawValue: raw) else { return nil }
-            return p == .none ? nil : p
+            guard let raw = defaults.string(forKey: "wallpaperPreset"), !raw.isEmpty else { return nil }
+            if let p = WallpaperPreset(rawValue: raw), p != .none { return p }
+            let legacy: [String: WallpaperPreset] = [
+                "Нет": .none, "None": .none, "无": .none,
+                "Градиент светлый": .gradientLight, "Light gradient": .gradientLight, "浅色渐变": .gradientLight,
+                "Градиент тёмный": .gradientDark, "Dark gradient": .gradientDark, "深色渐变": .gradientDark,
+                "Градиент синий": .gradientBlue, "Blue gradient": .gradientBlue, "蓝色渐变": .gradientBlue,
+                "Градиент тёплый": .gradientWarm, "Warm gradient": .gradientWarm, "暖色渐变": .gradientWarm,
+                "Текстура бумаги": .texturePaper, "Paper texture": .texturePaper, "纸张纹理": .texturePaper
+            ]
+            if let p = legacy[raw], p != .none {
+                defaults.set(p.rawValue, forKey: "wallpaperPreset")
+                return p
+            }
+            return nil
         }
         set {
             if let p = newValue, p != .none {

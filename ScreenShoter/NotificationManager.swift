@@ -39,7 +39,7 @@ final class NotificationManager {
 
     func showUploadSuccess(fileName: String, publicURL: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Загрузка завершена"
+        content.title = String(localized: "notification.upload_complete")
         content.body = publicURL
         content.subtitle = fileName
         content.sound = .default

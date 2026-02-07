@@ -9,10 +9,10 @@ enum ScrollCaptureService {
     @MainActor
     static func startScrollCapture(appState: AppState) async {
         let alert = NSAlert()
-        alert.messageText = "Прокручиваемый захват"
-        alert.informativeText = "Функция в разработке. В следующей версии можно будет захватывать длинный контент (чаты, код) с автоматической прокруткой и склейкой в одно изображение."
+        alert.messageText = String(localized: "stub.scroll.title")
+        alert.informativeText = String(localized: "stub.scroll.message")
         alert.alertStyle = .informational
-        alert.addButton(withTitle: "OK")
+        alert.addButton(withTitle: String(localized: "stub.ok"))
         alert.runModal()
         NSApp.activate(ignoringOtherApps: true)
     }

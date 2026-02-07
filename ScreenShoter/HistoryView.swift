@@ -10,13 +10,13 @@ struct HistoryView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("История загрузок")
+            Text("history.title")
                 .font(.title2.weight(.semibold))
                 .foregroundStyle(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             if records.isEmpty {
-                Text("Загрузок пока нет")
+                Text("history.empty")
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
@@ -52,11 +52,11 @@ struct HistoryView: View {
                         }
                         Spacer()
                         if !record.fileURL.isEmpty, let url = URL(string: record.fileURL) {
-                            Button("Открыть") {
+                            Button("history.open") {
                                 NSWorkspace.shared.open(url)
                             }
                             .buttonStyle(.bordered)
-                            Button("Скопировать") {
+                            Button("history.copy") {
                                 NSPasteboard.general.clearContents()
                                 NSPasteboard.general.setString(record.fileURL, forType: .string)
                                 if record.fileURL.contains("yadi.sk") {
@@ -65,7 +65,7 @@ struct HistoryView: View {
                             }
                             .buttonStyle(.bordered)
                         } else {
-                            Text("Ссылка не получена")
+                            Text("history.link_not_received")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }

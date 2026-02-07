@@ -1,0 +1,191 @@
+/* App */
+"app.name" = "ScreenShoter";
+
+/* Launcher menu */
+"menu.capture.full" = "Вся область экрана";
+"menu.capture.window" = "Окно (с тенью)";
+"menu.capture.region" = "Выбранная область";
+"menu.capture.scroll" = "Прокручиваемая область";
+"menu.with_timer" = "С таймером";
+"menu.capture.full.3s" = "Вся область (3 с)";
+"menu.capture.full.5s" = "Вся область (5 с)";
+"menu.capture.full.10s" = "Вся область (10 с)";
+"menu.stop_recording" = "Остановить запись";
+"menu.screen_recording" = "Запись экрана";
+"menu.record_screen" = "Записать экран";
+"menu.export_last_gif" = "Экспорт последней записи в GIF";
+"menu.upload_history" = "История загрузок";
+"menu.settings" = "Настройки";
+"menu.check_updates" = "Проверить обновления…";
+"menu.contact_author" = "Написать автору";
+"menu.quit" = "Выход";
+"menu.uploading %@" = "Загрузка %@";
+"menu.uploaded %@" = "Загружено: %@";
+
+/* Setup */
+"setup.welcome.desc" = "Быстрые скриншоты из меню-бара: вся область, окно или выбранный фрагмент. Аннотации и загрузка в облако.";
+"setup.permissions" = "Разрешения";
+"setup.notifications" = "Уведомления";
+"setup.notifications.desc" = "Приложение показывает уведомление, когда скриншот загружен в облако (WebDAV).";
+"setup.allow_notifications" = "Разрешить уведомления";
+"setup.allowed" = "Разрешено";
+"setup.denied_hint" = "Отклонено — включите в «Системные настройки» → Уведомления";
+"setup.screen_recording" = "Запись экрана";
+"setup.screen_recording.desc" = "Для скриншота выбранной области macOS запросит доступ к записи экрана. Включите ScreenShoter в списке.";
+"setup.open_privacy" = "Открыть «Системные настройки» → Конфиденциальность и безопасность → Запись экрана";
+"setup.autostart" = "Автозапуск";
+"setup.autostart.desc" = "Запускать ScreenShoter при входе в систему — иконка будет всегда в меню-баре.";
+"setup.shortcuts" = "Горячие клавиши";
+"setup.shortcuts.desc" = "Открыть меню: нажмите на иконку в меню-баре (рядом с часами). Чтобы назначить свою комбинацию, откройте «Системные настройки» → Клавиатура → Сочетания клавиш → Сочетания клавиш программ.";
+"setup.open_keyboard" = "Открыть настройки клавиатуры";
+"setup.cloud" = "Облако (необязательно)";
+"setup.cloud.desc" = "Загрузка скриншотов в Яндекс.Диск. Можно подключить позже в меню «Настройки».";
+"setup.connect_yandex" = "Подключить Яндекс.Диск";
+"setup.connect_yandex.hint" = "Откроется браузер. Войдите в аккаунт, нажмите «Разрешить» и вставьте код со страницы ниже.";
+"setup.code_from_page" = "Код со страницы";
+"setup.get_token" = "Получить токен";
+"setup.getting" = "Получение…";
+"setup.yandex_connected" = "Яндекс.Диск подключён";
+"setup.yandex_not_configured" = "Приложение не настроено для подключения Яндекс.Диска.";
+"setup.client_secret_hint" = "Укажите Client secret в YandexOAuthConfig и пересоберите приложение.";
+"setup.upload_after_save" = "Загружать в облако после сохранения";
+"setup.done" = "Всё готово";
+"setup.done.desc" = "Нажмите «Готово» — иконка ScreenShoter появится в меню-баре. Клик по ней откроет меню выбора типа скриншота.";
+"setup.back" = "Назад";
+"setup.next" = "Далее";
+"setup.start" = "Начать";
+"setup.finish" = "Завершить";
+"setup.done_btn" = "Готово";
+
+/* Settings */
+"settings.save_folder" = "Папка сохранения";
+"settings.not_selected" = "Не выбрана";
+"settings.choose" = "Выбрать…";
+"settings.format" = "Формат файла";
+"settings.compression" = "Сжатие изображения";
+"settings.scale_retina" = "Уменьшать Retina (2x → 1x)";
+"settings.section_save" = "Сохранение";
+"settings.section_save.footer" = "Папка по умолчанию подставляется в диалог сохранения. Формат — PNG или JPEG. Сжатие влияет на JPEG: нет = max качество, среднее = баланс, сильное = меньший размер. «Уменьшать Retina» даёт меньший размер, как в CleanShot.";
+"settings.quick_overlay" = "После съёмки: быстрый оверлей";
+"settings.hide_desktop_icons" = "Скрывать иконки рабочего стола при съёмке";
+"settings.crosshair_region" = "Режим прицела при выборе области";
+"settings.section_capture" = "Съёмка";
+"settings.section_capture.footer" = "Если включено, после съёмки показывается компактная панель «Сохранить / Копировать / Загрузить / Редактировать» вместо полного окна аннотаций. «Скрывать иконки» временно скрывает иконки на рабочем столе. «Режим прицела» — при выборе области показывается прицел по центру и выделение мышью вместо системного выбора.";
+"settings.like_screenshots" = "Как у скриншотов";
+"settings.reset" = "Сбросить";
+"settings.upload_video_after" = "Загружать видео в облако после записи";
+"settings.section_video" = "Запись экрана";
+"settings.section_video.footer" = "Папка для сохранения видео. Если не выбрана, используется папка для скриншотов.";
+"settings.launch_at_login" = "Запускать при входе в систему";
+"settings.section_autostart" = "Автозапуск";
+"settings.section_autostart.footer" = "ScreenShoter будет появляться в меню-баре при каждой загрузке macOS.";
+"settings.allow_notifications" = "Разрешить уведомления";
+"settings.open_settings" = "Открыть настройки";
+"settings.notification_not_requested" = "Разрешение не запрашивалось";
+"settings.notification_denied" = "Уведомления отключены";
+"settings.notification_enabled" = "Уведомления включены";
+"settings.section_notifications" = "Уведомления";
+"settings.section_notifications.footer" = "Уведомление показывается после загрузки скриншота в облако.";
+"settings.shortcut_with_editing" = "Скриншот с редактированием";
+"settings.shortcut_without_editing" = "Скриншот без редактирования";
+"settings.shortcut_recording" = "Запись экрана";
+"settings.change" = "Изменить";
+"settings.section_shortcuts" = "Сочетания клавиш";
+"settings.section_shortcuts.footer" = "Глобальные шорткаты (работают, когда приложение в фоне). По умолчанию: ⌘⇧E — с редактированием, ⌘⇧S — сохранение в папку и загрузка в облако. Нужно разрешение «Универсальный доступ» в Системных настройках.";
+"settings.upload_after_save" = "Загружать в облако после сохранения";
+"settings.yandex_not_configured" = "Приложение не настроено для подключения Яндекс.Диска.";
+"settings.dev_instructions" = "Инструкция для разработчика";
+"settings.client_secret_hint" = "Укажите Client secret в YandexOAuthConfig.swift (скопируйте с страницы приложения на oauth.yandex.ru) и пересоберите приложение.";
+"settings.connect_yandex" = "Подключить Яндекс.Диск";
+"settings.connect_hint" = "Нажмите кнопку — откроется браузер. Войдите в аккаунт и нажмите «Разрешить», затем скопируйте код со страницы и вставьте ниже.";
+"settings.code_from_page" = "Код со страницы";
+"settings.get_token" = "Получить токен";
+"settings.getting" = "Получение…";
+"settings.yandex_connected" = "Яндекс.Диск подключён";
+"settings.disconnect" = "Отключить";
+"settings.test_connection" = "Проверить подключение";
+"settings.testing" = "Проверка…";
+"settings.section_yandex" = "Яндекс.Диск";
+"settings.section_yandex.footer" = "Нажмите «Подключить Яндекс.Диск» — войдите в аккаунт и нажмите «Разрешить». Файлы сохраняются в папку ScreenShoter_mac.";
+"settings.wallpaper_preset" = "Готовый фон";
+"settings.none" = "Нет";
+"settings.use_mac_wallpaper" = "Использовать обои рабочего стола Mac";
+"settings.padding_h" = "Отступ слева и справа";
+"settings.padding_v" = "Отступ сверху и снизу";
+"settings.delete" = "Удалить";
+"settings.section_wallpaper" = "Обои для скриншотов";
+"settings.section_wallpaper.footer" = "При сохранении скриншот будет наложен на обои. Отступы — расстояние от краёв обоев до скриншота (S–XXL, 20–150 pt).";
+"settings.check_updates" = "Проверить обновления…";
+"settings.contact_author" = "Написать автору";
+"settings.section_updates" = "Обновления";
+"settings.section_updates.footer" = "Проверить наличие новой версии ScreenShoter. Есть идея — напишите разработчику.";
+"settings.token_received" = "Токен получен и сохранён.";
+"settings.connection_ok" = "Подключение успешно.";
+"settings.success_keywords" = "успешно";
+
+/* Formats */
+"format.png" = "PNG";
+"format.jpeg" = "JPEG";
+"format.compression.none" = "Нет";
+"format.compression.medium" = "Среднее";
+"format.compression.strong" = "Сильное";
+
+/* Wallpaper presets */
+"wallpaper.none" = "Нет";
+"wallpaper.gradient_light" = "Градиент светлый";
+"wallpaper.gradient_dark" = "Градиент тёмный";
+"wallpaper.gradient_blue" = "Градиент синий";
+"wallpaper.gradient_warm" = "Градиент тёплый";
+"wallpaper.texture_paper" = "Текстура бумаги";
+
+/* History */
+"history.title" = "История загрузок";
+"history.empty" = "Загрузок пока нет";
+"history.open" = "Открыть";
+"history.copy" = "Скопировать";
+"history.link_not_received" = "Ссылка не получена";
+
+/* Annotation */
+"annotation.upload_after_save" = "Загрузить после сохранения";
+"annotation.copy" = "Копировать в буфер обмена";
+"annotation.ocr" = "Распознать текст (OCR) и скопировать в буфер";
+"annotation.pin" = "Закрепить поверх всех окон";
+"annotation.unpin" = "Открепить окно";
+"annotation.save" = "Сохранить";
+"annotation.text_not_recognized" = "Текст не распознан";
+"annotation.ocr_failed" = "Не удалось распознать текст на изображении.";
+"annotation.error" = "Ошибка";
+
+/* Quick overlay */
+"overlay.save" = "Сохранить";
+"overlay.copy" = "Копировать";
+"overlay.upload" = "Загрузить";
+"overlay.edit" = "Редактировать";
+
+/* Window titles (for matching) */
+"window.annotations" = "Аннотации";
+"window.setup" = "Установка";
+"window.history" = "История";
+"window.settings" = "Настройки";
+"window.quick_overlay" = "Быстрый оверлей";
+"window.annotation_title" = "ScreenShoter — Аннотации";
+"window.overlay_title" = "ScreenShoter — Быстрый оверлей";
+"window.setup_title" = "Установка";
+"window.history_title" = "История загрузок";
+"window.settings_title" = "Настройки";
+
+/* Notifications */
+"notification.upload_complete" = "Загрузка завершена";
+
+/* Mail */
+"mail.subject" = "есть идея по приложению";
+
+/* WebDAV errors */
+"error.invalid_url" = "Неверный или неподдерживаемый адрес. Проверьте URL в настройках (должен начинаться с https://).";
+
+/* Stubs (feature in development) */
+"stub.ok" = "OK";
+"stub.scroll.title" = "Прокручиваемая область";
+"stub.scroll.message" = "Функция в разработке. В следующей версии можно будет захватывать длинный контент (чаты, код) с автоматической прокруткой и склейкой в одно изображение.";
+"stub.recording.title" = "Запись экрана";
+"stub.recording.message" = "Функция в разработке. Запись видео будет доступна в одной из следующих версий.";

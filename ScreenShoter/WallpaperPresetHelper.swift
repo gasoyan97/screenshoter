@@ -4,14 +4,24 @@ import CoreGraphics
 
 /// Готовые фоны для скриншотов (градиенты, текстуры) в стиле CleanShot.
 enum WallpaperPreset: String, CaseIterable, Identifiable {
-    case none = "Нет"
-    case gradientLight = "Градиент светлый"
-    case gradientDark = "Градиент тёмный"
-    case gradientBlue = "Градиент синий"
-    case gradientWarm = "Градиент тёплый"
-    case texturePaper = "Текстура бумаги"
+    case none = "none"
+    case gradientLight = "gradientLight"
+    case gradientDark = "gradientDark"
+    case gradientBlue = "gradientBlue"
+    case gradientWarm = "gradientWarm"
+    case texturePaper = "texturePaper"
 
     var id: String { rawValue }
+    var localizedLabel: String {
+        switch self {
+        case .none: return String(localized: "wallpaper.none")
+        case .gradientLight: return String(localized: "wallpaper.gradient_light")
+        case .gradientDark: return String(localized: "wallpaper.gradient_dark")
+        case .gradientBlue: return String(localized: "wallpaper.gradient_blue")
+        case .gradientWarm: return String(localized: "wallpaper.gradient_warm")
+        case .texturePaper: return String(localized: "wallpaper.texture_paper")
+        }
+    }
 }
 
 enum WallpaperPresetHelper {

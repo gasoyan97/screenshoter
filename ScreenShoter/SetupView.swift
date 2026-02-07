@@ -62,7 +62,7 @@ struct SetupView: View {
         VStack(alignment: .leading, spacing: 20) {
             Text("ScreenShoter")
                 .font(.largeTitle.weight(.bold))
-            Text("Быстрые скриншоты из меню-бара: вся область, окно или выбранный фрагмент. Аннотации и загрузка в облако.")
+            Text("setup.welcome.desc")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -75,7 +75,7 @@ struct SetupView: View {
 
     private var permissionsStep: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Разрешения")
+            Text("setup.permissions")
                 .font(.title2.weight(.semibold))
 
             // Уведомления
@@ -83,10 +83,10 @@ struct SetupView: View {
                 HStack {
                     Image(systemName: "bell.badge.fill")
                         .foregroundStyle(.secondary)
-                    Text("Уведомления")
+                    Text("setup.notifications")
                         .font(.headline)
                 }
-                Text("Приложение показывает уведомление, когда скриншот загружен в облако (WebDAV).")
+                Text("setup.notifications.desc")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -104,13 +104,13 @@ struct SetupView: View {
                                 .scaleEffect(0.8)
                                 .frame(width: 80, height: 22)
                         } else {
-                            Text(notificationStatus == .authorized || notificationStatus == .provisional ? "Разрешено" : "Разрешить уведомления")
+                            Text(notificationStatus == .authorized || notificationStatus == .provisional ? "setup.allowed" : "setup.allow_notifications")
                         }
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(notificationRequestInProgress || notificationStatus == .authorized || notificationStatus == .provisional)
                     if notificationStatus == .denied {
-                        Text("Отклонено — включите в «Системные настройки» → Уведомления")
+                        Text("setup.denied_hint")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -125,14 +125,14 @@ struct SetupView: View {
                 HStack {
                     Image(systemName: "rectangle.dashed.badge.record")
                         .foregroundStyle(.secondary)
-                    Text("Запись экрана")
+                    Text("setup.screen_recording")
                         .font(.headline)
                 }
-                Text("Для скриншота выбранной области macOS запросит доступ к записи экрана. Включите ScreenShoter в списке.")
+                Text("setup.screen_recording.desc")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                Button("Открыть «Системные настройки» → Конфиденциальность и безопасность → Запись экрана") {
+                Button("setup.open_privacy") {
                     if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
                         NSWorkspace.shared.open(url)
                     }
@@ -159,12 +159,12 @@ struct SetupView: View {
 
     private var autostartStep: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Автозапуск")
+            Text("setup.autostart")
                 .font(.title2.weight(.semibold))
-            Text("Запускать ScreenShoter при входе в систему — иконка будет всегда в меню-баре.")
+            Text("setup.autostart.desc")
                 .font(.body)
                 .foregroundStyle(.secondary)
-            Toggle("Запускать при входе в систему", isOn: $launchAtLogin)
+            Toggle("settings.launch_at_login", isOn: $launchAtLogin)
                 .toggleStyle(.switch)
                 .onChange(of: launchAtLogin) { _, new in
                     _ = LaunchAtLoginManager.setEnabled(new)
@@ -175,13 +175,13 @@ struct SetupView: View {
 
     private var shortcutsStep: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Горячие клавиши")
+            Text("setup.shortcuts")
                 .font(.title2.weight(.semibold))
-            Text("Открыть меню: нажмите на иконку в меню-баре (рядом с часами). Чтобы назначить свою комбинацию, откройте «Системные настройки» → Клавиатура → Сочетания клавиш → Сочетания клавиш программ.")
+            Text("setup.shortcuts.desc")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-            Button("Открыть настройки клавиатуры") {
+            Button("setup.open_keyboard") {
                 if let url = URL(string: "x-apple.systempreferences:com.apple.preference.keyboard?Shortcuts") {
                     NSWorkspace.shared.open(url)
                 } else {
@@ -195,16 +195,16 @@ struct SetupView: View {
 
     private var cloudStep: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Облако (необязательно)")
+            Text("setup.cloud")
                 .font(.title2.weight(.semibold))
-            Text("Загрузка скриншотов в Яндекс.Диск. Можно подключить позже в меню «Настройки».")
+            Text("setup.cloud.desc")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
 
             VStack(alignment: .leading, spacing: 12) {
                 if YandexOAuthConfig.builtInClientID.isEmpty {
-                    Text("Приложение не настроено для подключения Яндекс.Диска.")
+                    Text("setup.yandex_not_configured")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 } else if yandexOAuthToken.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -212,27 +212,27 @@ struct SetupView: View {
                         Button(action: startYandexOAuthFlow) {
                             HStack {
                                 Image(systemName: "link.badge.plus")
-                                Text("Подключить Яндекс.Диск")
+                                Text("setup.connect_yandex")
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
                         }
                         .buttonStyle(.borderedProminent)
-                        Text("Откроется браузер. Войдите в аккаунт, нажмите «Разрешить» и вставьте код со страницы ниже.")
+                        Text("setup.connect_yandex.hint")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         if showYandexCodeInput {
                             HStack(spacing: 8) {
-                                TextField("Код со страницы", text: $yandexVerificationCode)
+                                TextField("setup.code_from_page", text: $yandexVerificationCode)
                                     .textFieldStyle(.roundedBorder)
-                                Button(yandexCodeExchangeInProgress ? "Получение…" : "Получить токен") {
+                                Button(yandexCodeExchangeInProgress ? String(localized: "setup.getting") : String(localized: "setup.get_token")) {
                                     exchangeYandexCodeForToken()
                                 }
                                 .disabled(yandexCodeExchangeInProgress || yandexVerificationCode.trimmingCharacters(in: .whitespaces).isEmpty)
                             }
                         }
                     } else {
-                        Text("Укажите Client secret в YandexOAuthConfig и пересоберите приложение.")
+                        Text("setup.client_secret_hint")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -240,10 +240,10 @@ struct SetupView: View {
                     HStack {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(.green)
-                        Text("Яндекс.Диск подключён")
+                        Text("setup.yandex_connected")
                             .foregroundStyle(.secondary)
                     }
-                    Toggle("Загружать в облако после сохранения", isOn: $autoUpload)
+                    Toggle("setup.upload_after_save", isOn: $autoUpload)
                         .toggleStyle(.switch)
                         .onChange(of: autoUpload) { _, new in
                             AppSettings.autoUploadToWebDAV = new
@@ -252,7 +252,7 @@ struct SetupView: View {
                 if let msg = yandexMessage {
                     Text(msg)
                         .font(.caption)
-                        .foregroundStyle(msg.contains("успешно") || msg.contains("получен") || msg.contains("сохранён") ? Color.green : Color.orange)
+                        .foregroundStyle(msg.lowercased().contains("success") || msg.lowercased().contains("успешно") || msg.lowercased().contains("получен") || msg.lowercased().contains("сохранён") || msg.lowercased().contains("成功") ? Color.green : Color.orange)
                 }
             }
             .padding(12)
@@ -288,7 +288,7 @@ struct SetupView: View {
                     yandexVerificationCode = ""
                     showYandexCodeInput = false
                     yandexCodeExchangeInProgress = false
-                    yandexMessage = "Токен получен и сохранён."
+                    yandexMessage = String(localized: "settings.token_received")
                     autoUpload = true
                     AppSettings.autoUploadToWebDAV = true
                 }
@@ -303,9 +303,9 @@ struct SetupView: View {
 
     private var doneStep: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Всё готово")
+            Text("setup.done")
                 .font(.title2.weight(.semibold))
-            Text("Нажмите «Готово» — иконка ScreenShoter появится в меню-баре. Клик по ней откроет меню выбора типа скриншота.")
+            Text("setup.done.desc")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
@@ -316,7 +316,7 @@ struct SetupView: View {
     private var bottomBar: some View {
         HStack {
             if step.rawValue > 0 {
-                Button("Назад") {
+                Button("setup.back") {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         step = OnboardingStep(rawValue: step.rawValue - 1) ?? .welcome
                     }
@@ -325,17 +325,17 @@ struct SetupView: View {
             }
             Spacer()
             if step == .done {
-                Button("Готово") {
+                Button("setup.done_btn") {
                     closeSetup()
                 }
                 .buttonStyle(.borderedProminent)
             } else if step == .cloud {
-                Button("Завершить") {
+                Button("setup.finish") {
                     withAnimation(.easeInOut(duration: 0.2)) { step = .done }
                 }
                 .buttonStyle(.borderedProminent)
             } else {
-                Button(step == .welcome ? "Начать" : "Далее") {
+                Button(step == .welcome ? "setup.start" : "setup.next") {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         step = OnboardingStep(rawValue: step.rawValue + 1) ?? .done
                     }
@@ -349,6 +349,6 @@ struct SetupView: View {
 
     private func closeSetup() {
         UserDefaults.standard.set(true, forKey: "hasCheckedSetup")
-        NSApp.windows.first(where: { $0.title.contains("Установка") })?.close()
+        NSApp.windows.first(where: { $0.title.contains(String(localized: "window.setup")) })?.close()
     }
 }

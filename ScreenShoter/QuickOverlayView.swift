@@ -26,7 +26,7 @@ struct QuickOverlayView: View {
                     QuickCaptureService.shared.saveImage(image, appState: appState)
                     closeOverlay()
                 } label: {
-                    Label("Сохранить", systemImage: "square.and.arrow.down")
+                    Label("overlay.save", systemImage: "square.and.arrow.down")
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.bordered)
@@ -40,7 +40,7 @@ struct QuickOverlayView: View {
                     }
                     closeOverlay()
                 } label: {
-                    Label("Копировать", systemImage: "doc.on.clipboard")
+                    Label("overlay.copy", systemImage: "doc.on.clipboard")
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.bordered)
@@ -49,7 +49,7 @@ struct QuickOverlayView: View {
                     QuickCaptureService.shared.saveImage(image, appState: appState, forceUpload: true)
                     closeOverlay()
                 } label: {
-                    Label("Загрузить", systemImage: "icloud.and.arrow.up")
+                    Label("overlay.upload", systemImage: "icloud.and.arrow.up")
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.bordered)
@@ -61,7 +61,7 @@ struct QuickOverlayView: View {
                     appState.annotationImageId = UUID()
                     openWindow(id: "annotation")
                 } label: {
-                    Label("Редактировать", systemImage: "pencil")
+                    Label("overlay.edit", systemImage: "pencil")
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .buttonStyle(.borderedProminent)
@@ -78,14 +78,19 @@ struct QuickOverlayView: View {
     }
 
     private func closeOverlay() {
-        NSApp.windows.first(where: { $0.title.contains("Быстрый оверлей") })?.close()
+        NSApp.windows.first(where: { $0.title.contains(String(localized: "window.quick_overlay")) })?.close()
         updateDockVisibilityAfterClose()
     }
 }
 
 private func updateDockVisibilityAfterClose() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-        let mainTitles = ["Аннотации", "Установка", "История", "Настройки"]
+        let mainTitles = [
+            String(localized: "window.annotations"),
+            String(localized: "window.setup"),
+            String(localized: "window.history"),
+            String(localized: "window.settings")
+        ]
         let hasWindow = NSApp.windows.contains { w in
             w.isVisible && mainTitles.contains(where: { w.title.contains($0) })
         }

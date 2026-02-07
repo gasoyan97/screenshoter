@@ -22,10 +22,7 @@ struct SettingsView: View {
     @State private var compressionLevel: CompressionLevel = AppSettings.compressionLevel
     @State private var shortcutWithEditingDisplay = HotkeyManager.string(keyCode: AppSettings.shortcutWithEditingKeyCode, modifiers: AppSettings.shortcutWithEditingModifiers)
     @State private var shortcutWithoutEditingDisplay = HotkeyManager.string(keyCode: AppSettings.shortcutWithoutEditingKeyCode, modifiers: AppSettings.shortcutWithoutEditingModifiers)
-    @State private var shortcutRecordingDisplay = HotkeyManager.string(keyCode: AppSettings.shortcutRecordingKeyCode, modifiers: AppSettings.shortcutRecordingModifiers)
     @State private var useQuickOverlayAfterCapture: Bool = AppSettings.useQuickOverlayAfterCapture
-    @State private var videoSaveFolder: URL? = AppSettings.videoSaveFolder
-    @State private var autoUploadVideo: Bool = AppSettings.autoUploadVideoToWebDAV
     @State private var hideDesktopIconsBeforeCapture: Bool = AppSettings.hideDesktopIconsBeforeCapture
     @State private var showCrosshairForRegionCapture: Bool = AppSettings.showCrosshairForRegionCapture
     @State private var wallpaperPreset: WallpaperPreset? = AppSettings.wallpaperPreset
@@ -34,63 +31,43 @@ struct SettingsView: View {
         Form {
             Section {
                 HStack {
-                    Text(defaultSaveFolder?.path ?? "Не выбрана")
+                    Text(defaultSaveFolder?.path ?? String(localized: "settings.not_selected"))
                         .lineLimit(1)
                         .truncationMode(.middle)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Button("Выбрать…", action: chooseSaveFolder)
+                    Button("settings.choose", action: chooseSaveFolder)
                 }
-                Picker("Формат файла", selection: $screenshotFormat) {
-                    ForEach(ScreenshotFormat.allCases) { Text($0.rawValue).tag($0) }
+                Picker("settings.format", selection: $screenshotFormat) {
+                    ForEach(ScreenshotFormat.allCases) { Text($0.localizedLabel).tag($0) }
                 }
                 .onChange(of: screenshotFormat) { _, new in AppSettings.screenshotFormat = new }
-                Picker("Сжатие изображения", selection: $compressionLevel) {
-                    ForEach(CompressionLevel.allCases) { Text($0.rawValue).tag($0) }
+                Picker("settings.compression", selection: $compressionLevel) {
+                    ForEach(CompressionLevel.allCases) { Text($0.localizedLabel).tag($0) }
                 }
                 .onChange(of: compressionLevel) { _, new in AppSettings.compressionLevel = new }
-                Toggle("Уменьшать Retina (2x → 1x)", isOn: $scaleDownRetina)
+                Toggle("settings.scale_retina", isOn: $scaleDownRetina)
                     .onChange(of: scaleDownRetina) { _, new in AppSettings.scaleDownRetina = new }
-            } header: { Text("Сохранение") }
-            footer: { Text("Папка по умолчанию подставляется в диалог сохранения. Формат — PNG или JPEG. Сжатие влияет на JPEG: нет = max качество, среднее = баланс, сильное = меньший размер. «Уменьшать Retina» даёт меньший размер, как в CleanShot.") }
+            } header: { Text("settings.section_save") }
+            footer: { Text("settings.section_save.footer") }
 
             Section {
-                Toggle("После съёмки: быстрый оверлей", isOn: $useQuickOverlayAfterCapture)
+                Toggle("settings.quick_overlay", isOn: $useQuickOverlayAfterCapture)
                     .onChange(of: useQuickOverlayAfterCapture) { _, new in AppSettings.useQuickOverlayAfterCapture = new }
-                Toggle("Скрывать иконки рабочего стола при съёмке", isOn: $hideDesktopIconsBeforeCapture)
+                Toggle("settings.hide_desktop_icons", isOn: $hideDesktopIconsBeforeCapture)
                     .onChange(of: hideDesktopIconsBeforeCapture) { _, new in AppSettings.hideDesktopIconsBeforeCapture = new }
-                Toggle("Режим прицела при выборе области", isOn: $showCrosshairForRegionCapture)
+                Toggle("settings.crosshair_region", isOn: $showCrosshairForRegionCapture)
                     .onChange(of: showCrosshairForRegionCapture) { _, new in AppSettings.showCrosshairForRegionCapture = new }
-            } header: { Text("Съёмка") }
-            footer: { Text("Если включено, после съёмки показывается компактная панель «Сохранить / Копировать / Загрузить / Редактировать» вместо полного окна аннотаций. «Скрывать иконки» временно скрывает иконки на рабочем столе. «Режим прицела» — при выборе области показывается прицел по центру и выделение мышью вместо системного выбора.") }
+            } header: { Text("settings.section_capture") }
+            footer: { Text("settings.section_capture.footer") }
 
             Section {
-                HStack {
-                    Text(videoSaveFolder?.path ?? "Как у скриншотов")
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                    Button("Выбрать…", action: chooseVideoSaveFolder)
-                    if videoSaveFolder != nil {
-                        Button("Сбросить") {
-                            videoSaveFolder = nil
-                            AppSettings.videoSaveFolder = nil
-                        }
-                    }
-                }
-                Toggle("Загружать видео в облако после записи", isOn: $autoUploadVideo)
-                    .onChange(of: autoUploadVideo) { _, new in AppSettings.autoUploadVideoToWebDAV = new }
-            } header: { Text("Запись экрана") }
-            footer: { Text("Папка для сохранения видео. Если не выбрана, используется папка для скриншотов.") }
-
-            Section {
-                Toggle("Запускать при входе в систему", isOn: $launchAtLogin)
+                Toggle("settings.launch_at_login", isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, new in
                         _ = LaunchAtLoginManager.setEnabled(new)
                     }
-            } header: { Text("Автозапуск") }
-            footer: { Text("ScreenShoter будет появляться в меню-баре при каждой загрузке macOS.") }
+            } header: { Text("settings.section_autostart") }
+            footer: { Text("settings.section_autostart.footer") }
 
             Section {
                 HStack {
@@ -98,16 +75,16 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                     Spacer()
                     if notificationStatus == .authorized || notificationStatus == .provisional {
-                        Text("Разрешено")
+                        Text("setup.allowed")
                             .foregroundStyle(.green)
                     } else {
-                        Button("Разрешить уведомления") {
+                        Button("settings.allow_notifications") {
                             Task {
                                 _ = await NotificationManager.shared.requestAuthorization()
                                 await refreshNotificationStatus()
                             }
                         }
-                        Button("Открыть настройки") {
+                        Button("settings.open_settings") {
                             if let url = URL(string: "x-apple.systempreferences:com.apple.preference.notifications") {
                                 NSWorkspace.shared.open(url)
                             } else {
@@ -117,17 +94,17 @@ struct SettingsView: View {
                         .buttonStyle(.borderless)
                     }
                 }
-            } header: { Text("Уведомления") }
-            footer: { Text("Уведомление показывается после загрузки скриншота в облако.") }
+            } header: { Text("settings.section_notifications") }
+            footer: { Text("settings.section_notifications.footer") }
 
             Section {
                 HStack {
-                    Text("Скриншот с редактированием")
+                    Text("settings.shortcut_with_editing")
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(shortcutWithEditingDisplay)
                         .foregroundStyle(.secondary)
                         .font(.system(.body, design: .monospaced))
-                    Button("Изменить") {
+                    Button("settings.change") {
                         HotkeyManager.shared.recordShortcut { keyCode, modifiers in
                             AppSettings.shortcutWithEditingKeyCode = keyCode
                             AppSettings.shortcutWithEditingModifiers = modifiers
@@ -136,12 +113,12 @@ struct SettingsView: View {
                     }
                 }
                 HStack {
-                    Text("Скриншот без редактирования")
+                    Text("settings.shortcut_without_editing")
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(shortcutWithoutEditingDisplay)
                         .foregroundStyle(.secondary)
                         .font(.system(.body, design: .monospaced))
-                    Button("Изменить") {
+                    Button("settings.change") {
                         HotkeyManager.shared.recordShortcut { keyCode, modifiers in
                             AppSettings.shortcutWithoutEditingKeyCode = keyCode
                             AppSettings.shortcutWithoutEditingModifiers = modifiers
@@ -149,57 +126,43 @@ struct SettingsView: View {
                         }
                     }
                 }
-                HStack {
-                    Text("Запись экрана")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Text(shortcutRecordingDisplay)
-                        .foregroundStyle(.secondary)
-                        .font(.system(.body, design: .monospaced))
-                    Button("Изменить") {
-                        HotkeyManager.shared.recordShortcut { keyCode, modifiers in
-                            AppSettings.shortcutRecordingKeyCode = keyCode
-                            AppSettings.shortcutRecordingModifiers = modifiers
-                            shortcutRecordingDisplay = HotkeyManager.string(keyCode: keyCode, modifiers: modifiers)
-                        }
-                    }
-                }
-            } header: { Text("Сочетания клавиш") }
-            footer: { Text("Глобальные шорткаты (работают, когда приложение в фоне). По умолчанию: ⌘⇧E — с редактированием, ⌘⇧S — сохранение в папку и загрузка в облако. Нужно разрешение «Универсальный доступ» в Системных настройках.") }
+            } header: { Text("settings.section_shortcuts") }
+            footer: { Text("settings.section_shortcuts.footer") }
 
             Section {
-                Toggle("Загружать в облако после сохранения", isOn: $autoUpload)
+                Toggle("settings.upload_after_save", isOn: $autoUpload)
                     .onChange(of: autoUpload) { _, new in AppSettings.autoUploadToWebDAV = new }
 
                 VStack(alignment: .leading, spacing: 12) {
                     if YandexOAuthConfig.builtInClientID.isEmpty {
-                        Text("Приложение не настроено для подключения Яндекс.Диска.")
+                        Text("settings.yandex_not_configured")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
-                        Link("Инструкция для разработчика", destination: URL(string: "https://yandex.ru/dev/disk-api/doc/ru/concepts/quickstart")!)
+                        Link("settings.dev_instructions", destination: URL(string: "https://yandex.ru/dev/disk-api/doc/ru/concepts/quickstart")!)
                             .font(.caption)
                     } else if yandexOAuthToken.trimmingCharacters(in: .whitespaces).isEmpty {
                         if YandexOAuthConfig.builtInClientSecret.isEmpty {
-                            Text("Укажите Client secret в YandexOAuthConfig.swift (скопируйте с страницы приложения на oauth.yandex.ru) и пересоберите приложение.")
+                            Text("settings.client_secret_hint")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
                         Button(action: startOAuthTokenFlow) {
                             HStack {
                                 Image(systemName: "link.badge.plus")
-                                Text("Подключить Яндекс.Диск")
+                                Text("settings.connect_yandex")
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
                         }
                         .buttonStyle(.borderedProminent)
-                        Text("Нажмите кнопку — откроется браузер. Войдите в аккаунт и нажмите «Разрешить», затем скопируйте код со страницы и вставьте ниже.")
+                        Text("settings.connect_hint")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         if showYandexCodeInput {
                             HStack(spacing: 8) {
-                                TextField("Код со страницы", text: $yandexVerificationCode)
+                                TextField("settings.code_from_page", text: $yandexVerificationCode)
                                     .textFieldStyle(.roundedBorder)
-                                Button(yandexCodeExchangeInProgress ? "Получение…" : "Получить токен") {
+                                Button(yandexCodeExchangeInProgress ? String(localized: "settings.getting") : String(localized: "settings.get_token")) {
                                     exchangeYandexCodeForToken()
                                 }
                                 .disabled(yandexCodeExchangeInProgress || yandexVerificationCode.trimmingCharacters(in: .whitespaces).isEmpty)
@@ -209,16 +172,16 @@ struct SettingsView: View {
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundStyle(.green)
-                            Text("Яндекс.Диск подключён")
+                            Text("settings.yandex_connected")
                                 .foregroundStyle(.secondary)
                             Spacer()
-                            Button("Отключить") {
+                            Button("settings.disconnect") {
                                 yandexOAuthToken = ""
                                 AppSettings.yandexOAuthToken = ""
                             }
                             .buttonStyle(.borderless)
                         }
-                        Button(webdavTestInProgress ? "Проверка…" : "Проверить подключение") {
+                        Button(webdavTestInProgress ? String(localized: "settings.testing") : String(localized: "settings.test_connection")) {
                             testYandexRESTConnection()
                         }
                         .disabled(webdavTestInProgress)
@@ -226,69 +189,69 @@ struct SettingsView: View {
                     if let msg = webdavTestMessage {
                         Text(msg)
                             .font(.caption)
-                            .foregroundStyle(msg.contains("успешно") || msg.contains("получен") ? Color.green : Color.orange)
+                            .foregroundStyle(msg.lowercased().contains("success") || msg.lowercased().contains("успешно") || msg.lowercased().contains("получен") || msg.lowercased().contains("成功") ? Color.green : Color.orange)
                     }
                 }
                 .padding(.vertical, 4)
-            } header: { Text("Яндекс.Диск") }
-            footer: { Text("Нажмите «Подключить Яндекс.Диск» — войдите в аккаунт и нажмите «Разрешить». Файлы сохраняются в папку ScreenShoter_mac.") }
+            } header: { Text("settings.section_yandex") }
+            footer: { Text("settings.section_yandex.footer") }
 
             Section {
-                Picker("Готовый фон", selection: $wallpaperPreset) {
-                    Text("Нет").tag(Optional<WallpaperPreset>.none)
+                Picker("settings.wallpaper_preset", selection: $wallpaperPreset) {
+                    Text("settings.none").tag(Optional<WallpaperPreset>.none)
                     ForEach(WallpaperPreset.allCases.filter { $0 != .none }) { preset in
-                        Text(preset.rawValue).tag(Optional(preset))
+                        Text(preset.localizedLabel).tag(Optional(preset))
                     }
                 }
                 .onChange(of: wallpaperPreset) { _, new in AppSettings.wallpaperPreset = new }
-                Toggle("Использовать обои рабочего стола Mac", isOn: $useMacWallpaper)
+                Toggle("settings.use_mac_wallpaper", isOn: $useMacWallpaper)
                     .onChange(of: useMacWallpaper) { _, new in AppSettings.useMacWallpaper = new }
-                Picker("Отступ слева и справа", selection: $wallpaperPaddingPreset) {
+                Picker("settings.padding_h", selection: $wallpaperPaddingPreset) {
                     ForEach(AppSettings.WallpaperPaddingPreset.allCases) { preset in
-                        Text(preset.label).tag(preset)
+                        Text(preset.localizedLabel).tag(preset)
                     }
                 }
                 .onChange(of: wallpaperPaddingPreset) { _, new in AppSettings.wallpaperPaddingPreset = new }
-                Picker("Отступ сверху и снизу", selection: $wallpaperPaddingVerticalPreset) {
+                Picker("settings.padding_v", selection: $wallpaperPaddingVerticalPreset) {
                     ForEach(AppSettings.WallpaperPaddingPreset.allCases) { preset in
-                        Text(preset.label).tag(preset)
+                        Text(preset.localizedLabel).tag(preset)
                     }
                 }
                 .onChange(of: wallpaperPaddingVerticalPreset) { _, new in AppSettings.wallpaperPaddingVerticalPreset = new }
-                if wallpaperPreset == nil || wallpaperPreset == .none, !useMacWallpaper {
+                if wallpaperPreset == nil, !useMacWallpaper {
                     HStack {
-                        Text(wallpaperPath.isEmpty ? "Не выбрано" : (URL(fileURLWithPath: wallpaperPath).lastPathComponent))
+                        Text(wallpaperPath.isEmpty ? String(localized: "settings.not_selected") : (URL(fileURLWithPath: wallpaperPath).lastPathComponent))
                             .lineLimit(1)
                             .truncationMode(.middle)
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Button("Выбрать…", action: chooseWallpaper)
+                        Button("settings.choose", action: chooseWallpaper)
                         if !wallpaperPath.isEmpty {
-                            Button("Удалить") {
+                            Button("settings.delete") {
                                 wallpaperPath = ""
                                 AppSettings.wallpaperImagePath = nil
                             }
                         }
                     }
                 }
-            } header: { Text("Обои для скриншотов") }
-            footer: { Text("При сохранении скриншот будет наложен на обои. Отступы — расстояние от краёв обоев до скриншота (S–XXL, 20–150 pt).") }
+            } header: { Text("settings.section_wallpaper") }
+            footer: { Text("settings.section_wallpaper.footer") }
 
             Section {
-                Button("Проверить обновления…") {
+                Button("settings.check_updates") {
                     SparkleUpdater.checkForUpdates()
                 }
-                Button("Написать автору") {
+                Button("settings.contact_author") {
                     var components = URLComponents()
                     components.scheme = "mailto"
                     components.path = "work@gasoyan.ru"
-                    components.queryItems = [URLQueryItem(name: "subject", value: "есть идея по приложению")]
+                    components.queryItems = [URLQueryItem(name: "subject", value: String(localized: "mail.subject"))]
                     if let url = components.url {
                         NSWorkspace.shared.open(url)
                     }
                 }
-            } header: { Text("Обновления") }
-            footer: { Text("Проверить наличие новой версии ScreenShoter. Есть идея — напишите разработчику.") }
+            } header: { Text("settings.section_updates") }
+            footer: { Text("settings.section_updates.footer") }
         }
         .formStyle(.grouped)
         .frame(width: 460, height: 700)
@@ -307,10 +270,7 @@ struct SettingsView: View {
             webdavTestMessage = nil
             shortcutWithEditingDisplay = HotkeyManager.string(keyCode: AppSettings.shortcutWithEditingKeyCode, modifiers: AppSettings.shortcutWithEditingModifiers)
             shortcutWithoutEditingDisplay = HotkeyManager.string(keyCode: AppSettings.shortcutWithoutEditingKeyCode, modifiers: AppSettings.shortcutWithoutEditingModifiers)
-            shortcutRecordingDisplay = HotkeyManager.string(keyCode: AppSettings.shortcutRecordingKeyCode, modifiers: AppSettings.shortcutRecordingModifiers)
             useQuickOverlayAfterCapture = AppSettings.useQuickOverlayAfterCapture
-            videoSaveFolder = AppSettings.videoSaveFolder
-            autoUploadVideo = AppSettings.autoUploadVideoToWebDAV
             hideDesktopIconsBeforeCapture = AppSettings.hideDesktopIconsBeforeCapture
             showCrosshairForRegionCapture = AppSettings.showCrosshairForRegionCapture
             wallpaperPreset = AppSettings.wallpaperPreset
@@ -320,9 +280,9 @@ struct SettingsView: View {
 
     private var statusTextForNotification: String {
         switch notificationStatus {
-        case .notDetermined: return "Разрешение не запрашивалось"
-        case .denied: return "Уведомления отключены"
-        case .authorized, .provisional: return "Уведомления включены"
+        case .notDetermined: return String(localized: "settings.notification_not_requested")
+        case .denied: return String(localized: "settings.notification_denied")
+        case .authorized, .provisional: return String(localized: "settings.notification_enabled")
         }
     }
 
@@ -352,7 +312,7 @@ struct SettingsView: View {
                     yandexVerificationCode = ""
                     showYandexCodeInput = false
                     yandexCodeExchangeInProgress = false
-                    webdavTestMessage = "Токен получен и сохранён."
+                    webdavTestMessage = String(localized: "settings.token_received")
                 }
             } catch {
                 await MainActor.run {
@@ -372,7 +332,7 @@ struct SettingsView: View {
                 try await WebDAVUploader.shared.testYandexRESTConnection(oauthToken: yandexOAuthToken.isEmpty ? nil : yandexOAuthToken)
                 await MainActor.run {
                     webdavTestInProgress = false
-                    webdavTestMessage = "Подключение успешно."
+                    webdavTestMessage = String(localized: "settings.connection_ok")
                 }
             } catch {
                 await MainActor.run {
@@ -411,17 +371,4 @@ struct SettingsView: View {
         }
     }
 
-    private func chooseVideoSaveFolder() {
-        let panel = NSOpenPanel()
-        panel.canChooseFiles = false
-        panel.canChooseDirectories = true
-        panel.allowsMultipleSelection = false
-        panel.directoryURL = videoSaveFolder ?? defaultSaveFolder
-        panel.begin { response in
-            if response == .OK, let url = panel.url {
-                videoSaveFolder = url
-                AppSettings.videoSaveFolder = url
-            }
-        }
-    }
 }

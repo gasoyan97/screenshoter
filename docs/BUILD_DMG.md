@@ -8,19 +8,21 @@ Workflow и скрипты работают **без платной подпис
 
 ## Вариант 1: GitHub Actions (автоматически)
 
-При пуше тега `v*` workflow собирает DMG и создаёт Release.
+При пуше тега `v*` workflow создаёт ветку `release/X.Y.Z` (trunk base), собирает DMG и создаёт Release.
 
 **Важно:** перед созданием тега обновите версию в `ScreenShoter/Info.plist`:
-- `CFBundleShortVersionString` — версия для пользователя (0.0.2)
+- `CFBundleShortVersionString` — версия для пользователя (0.0.5)
 - `CFBundleVersion` — номер сборки (увеличивайте при каждом релизе)
 
 ```bash
 git add .
-git commit -m "Release 0.0.2"
-git tag v0.0.2
+git commit -m "Release 0.0.5"
+git tag v0.0.5
 git push origin main
-git push origin v0.0.2
+git push origin v0.0.5
 ```
+
+Workflow создаст ветку `release/0.0.5` от тега и соберёт билд из неё.
 
 ### Секреты (опционально)
 

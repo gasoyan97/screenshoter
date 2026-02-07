@@ -20,11 +20,11 @@ final class WebDAVUploader {
             return msg
         }
         if let urlError = error as? URLError, urlError.code == .unsupportedURL {
-            return "Неверный или неподдерживаемый адрес. Проверьте URL в настройках (должен начинаться с https://)."
+            return String(localized: "error.invalid_url")
         }
         let desc = error.localizedDescription
         if desc.lowercased().contains("unsupported url") {
-            return "Неверный или неподдерживаемый адрес. Проверьте URL в настройках (должен начинаться с https://)."
+            return String(localized: "error.invalid_url")
         }
         return desc
     }
