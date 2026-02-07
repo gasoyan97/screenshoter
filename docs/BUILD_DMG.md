@@ -1,5 +1,11 @@
 # Публичная сборка в DMG
 
+## Без Apple Developer Program
+
+Workflow и скрипты работают **без платной подписки** — создают DMG для размещения на своём сайте.
+
+**Ограничение:** при первом запуске пользователю нужно правый клик → Открыть (macOS Gatekeeper). После этого приложение откроется нормально.
+
 ## Вариант 1: GitHub Actions (автоматически)
 
 При пуше тега `v*` workflow собирает DMG и создаёт Release.
@@ -16,7 +22,11 @@ git push origin main
 git push origin v0.0.2
 ```
 
-### Требуемые секреты (Settings → Secrets → Actions)
+### Секреты (опционально)
+
+**Без секретов** — сборка работает, создаётся DMG без подписи Apple.
+
+**С секретами** — подпись и нотаризация (без предупреждений Gatekeeper):
 
 | Секрет | Описание |
 |--------|----------|
@@ -25,7 +35,7 @@ git push origin v0.0.2
 | `KEYCHAIN_PASSWORD` | Любой пароль (для временного keychain) |
 | `APPLE_ID` | Apple ID (email) |
 | `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password |
-| `TEAM_ID` | Team ID (10 символов, например XKL7SFFS36) |
+| `TEAM_ID` | Team ID (10 символов) |
 
 ### Экспорт сертификата
 

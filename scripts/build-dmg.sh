@@ -3,23 +3,26 @@
 # Использование: ./scripts/build-dmg.sh [версия]
 #   ./scripts/build-dmg.sh         — версия из Info.plist
 #   ./scripts/build-dmg.sh 0.0.2   — указать версию
+#
+# Работает без Apple Developer — DMG для размещения на своём сайте.
+# При первом запуске: правый клик по приложению → Открыть (Gatekeeper).
 set -e
 cd "$(dirname "$0")/.."
 
 VERSION="${1:-$(plutil -extract CFBundleShortVersionString raw ScreenShoter/Info.plist)}"
-BUILD="${2:-$(plutil -extract CFBundleVersion raw ScreenShoter/Info.plist)}"
-echo "Сборка ScreenShoter $VERSION ($BUILD)..."
+echo "Сборка ScreenShoter $VERSION..."
 
-# Archive
 xcodebuild -scheme ScreenShoter -configuration Release \
-  -archivePath build/ScreenShoter.xcarchive \
-  archive
+  -derivedDataPath build/DerivedData \
+  CODE_SIGN_IDENTITY="-" \
+  build
 
-# Export
-xcodebuild -exportArchive \
-  -archivePath build/ScreenShoter.xcarchive \
-  -exportPath build/export \
-  -exportOptionsPlist .github/ExportOptions.plist
+mkdir -p build/export
+APP_PATH="build/DerivedData/Build/Products/Release/ScreenShoter.app"
+if [ ! -d "$APP_PATH" ]; then
+  APP_PATH=$(find build/DerivedData -name "ScreenShoter.app" -type d | head -1)
+fi
+cp -R "$APP_PATH" build/export/
 
 # DMG
 DMG_NAME="ScreenShoter-$VERSION.dmg"
