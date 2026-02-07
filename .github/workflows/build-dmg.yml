@@ -33,6 +33,16 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Building version $VERSION"
 
+      - name: Update Info.plist version
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          plutil -replace CFBundleShortVersionString -string "$VERSION" ScreenShoter/Info.plist
+          # Build: 0.0.3 → 3, 1.2.34 → 1234
+          BUILD=$(echo "$VERSION" | tr -cd '0-9')
+          [ -z "$BUILD" ] && BUILD=1
+          plutil -replace CFBundleVersion -string "$BUILD" ScreenShoter/Info.plist
+          echo "Info.plist: CFBundleShortVersionString=$VERSION, CFBundleVersion=$BUILD"
+
       - name: Import certificates
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}

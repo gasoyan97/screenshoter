@@ -17,9 +17,9 @@
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.0.1</string>
+    <string>0.0.3</string>
     <key>CFBundleVersion</key>
-    <string>2</string>
+    <string>3</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.utilities</string>
     <key>LSMinimumSystemVersion</key>
@@ -37,6 +37,8 @@
     <key>SUPublicEDKey</key>
     <string>lnnvt81WfFEdzfZOaLH6RXW9wvZ3ilO8pYtL3Ekkd3A=</string>
     <key>SUAllowsAutomaticUpdates</key>
+    <true/>
+    <key>SUEnableAutomaticChecks</key>
     <true/>
 </dict>
 </plist>
