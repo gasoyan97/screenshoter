@@ -44,7 +44,7 @@ jobs:
         run: |
           TAG="${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.event.release.tag_name }}"
           echo "Using tag: $TAG"
-          gh release download "$TAG" -D updates -p '*.zip' -p '*.dmg' -p '*.tar.xz' || { echo "::error::Failed to download assets for $TAG"; exit 1; }
+          gh release download "$TAG" -D updates -p '*.zip' || { echo "::error::Failed to download assets for $TAG"; exit 1; }
           echo "tag=$TAG" >> $GITHUB_ENV
           ls -la updates/
 
