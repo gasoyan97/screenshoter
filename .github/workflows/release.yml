@@ -65,10 +65,8 @@ jobs:
             echo "::warning::SPARKLE_PRIVATE_KEY not set. Add it as repo secret for signed appcast."
             echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"><channel><title>ScreenShoter</title><description>Updates</description></channel></rss>" > pages/appcast.xml
           else
-            echo "$SPARKLE_PRIVATE_KEY" | tr -d '\n' > private_key.pem
-            chmod 600 private_key.pem
-            ./bin/generate_appcast -s private_key.pem --link "$BASE_URL/" updates/ || \
-            ./bin/generate_appcast -s private_key.pem updates/
+            echo "$SPARKLE_PRIVATE_KEY" | tr -d '\n' | base64 -d | ./bin/generate_appcast --ed-key-file - --link "$BASE_URL/" updates/ || \
+            echo "$SPARKLE_PRIVATE_KEY" | tr -d '\n' | base64 -d | ./bin/generate_appcast --ed-key-file - updates/
             mv updates/appcast.xml pages/appcast.xml 2>/dev/null || cp docs/appcast.xml.example pages/appcast.xml
           fi
           cat pages/appcast.xml
