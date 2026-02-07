@@ -1,0 +1,35 @@
+# Деплой appcast.xml на GitHub Pages (репо screnshoter).
+# После заполнения length и sparkle:edSignature в appcast.xml — push в main, фид будет на:
+# https://gasoyan97.github.io/screnshoter/appcast.xml
+
+name: Deploy appcast to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

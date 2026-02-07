@@ -8,7 +8,7 @@ struct ScreenShoterApp: App {
 
     init() {
         _ = NotificationManager.shared
-        _ = SparkleUpdater.controller
+        // SparkleUpdater.controller создаётся при первом обращении (на MainActor)
     }
 
     var body: some Scene {

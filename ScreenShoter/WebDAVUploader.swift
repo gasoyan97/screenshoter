@@ -56,6 +56,7 @@ final class WebDAVUploader {
     private static let yandexWebDAVBase = "https://webdav.yandex.ru"
 
     private func uploadViaYandexREST(fileURL: URL, oauthToken: String) async throws -> WebDAVUploadResult {
+        try await ensureRemoteFolderExists(oauthToken: oauthToken)
         let fileName = fileURL.lastPathComponent
         let diskPath = "/\(Self.remoteFolderName)/\(fileName)"
         var comp = URLComponents(string: "\(Self.yandexCloudAPIBase)/resources/upload")
@@ -199,12 +200,30 @@ final class WebDAVUploader {
         return nil
     }
 
-    /// Проверка подключения к Яндекс.Диску REST API. Запрашиваем URL для загрузки (достаточно cloud_api:disk.write), без GET /v1/disk (нужен disk.info).
+    /// Создаёт папку ScreenShoter_mac на Диске, если её ещё нет (REST API).
+    private func ensureRemoteFolderExists(oauthToken: String) async throws {
+        var comp = URLComponents(string: "\(Self.yandexCloudAPIBase)/resources")
+        comp?.queryItems = [URLQueryItem(name: "path", value: "/\(Self.remoteFolderName)")]
+        guard let url = comp?.url else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("OAuth \(oauthToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("ScreenShoter/1.0 (Yandex REST)", forHTTPHeaderField: "User-Agent")
+        let (data, response) = try await session.data(for: request)
+        guard let http = response as? HTTPURLResponse else { return }
+        // 201 — создана, 200 — уже есть (по доке), 409 — папка уже существует
+        if http.statusCode == 200 || http.statusCode == 201 || http.statusCode == 409 { return }
+        let msg = yandexRestErrorMessage(statusCode: http.statusCode, responseData: data)
+        throw NSError(domain: "WebDAVUpload", code: http.statusCode, userInfo: [NSLocalizedDescriptionKey: msg])
+    }
+
+    /// Проверка подключения к Яндекс.Диску REST API. Создаёт папку при необходимости, затем запрашивает URL загрузки.
     func testYandexRESTConnection(oauthToken: String? = nil) async throws {
         let token = (oauthToken ?? AppSettings.yandexOAuthToken).trimmingCharacters(in: .whitespacesAndNewlines)
         guard !token.isEmpty else {
             throw NSError(domain: "WebDAVUpload", code: -1, userInfo: [NSLocalizedDescriptionKey: "Укажите OAuth-токен."])
         }
+        try await ensureRemoteFolderExists(oauthToken: token)
         let testPath = "/\(Self.remoteFolderName)/.connection_check"
         var comp = URLComponents(string: "\(Self.yandexCloudAPIBase)/resources/upload")
         comp?.queryItems = [URLQueryItem(name: "path", value: testPath), URLQueryItem(name: "overwrite", value: "true")]

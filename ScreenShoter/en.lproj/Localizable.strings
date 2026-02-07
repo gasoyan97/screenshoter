@@ -155,6 +155,11 @@
 "annotation.text_not_recognized" = "Text not recognized";
 "annotation.ocr_failed" = "Could not recognize text on the image.";
 "annotation.error" = "Error";
+"annotation.text_placeholder" = "Text";
+"annotation.undo" = "Undo";
+"annotation.redo" = "Redo";
+"annotation.delete" = "Delete";
+"annotation.blur_hint" = "Drag on the image to select an area to blur";
 
 /* Quick overlay */
 "overlay.save" = "Save";

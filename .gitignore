@@ -8,6 +8,9 @@
 ScreenShoter/Secrets.xcconfig
 ScreenShoter/YandexOAuthSecrets.generated.swift
 
+# Local clone for pushing to screnshoter repo
+_screnshoter_deploy/
+
 # Build artifacts
 *.dmg
 *.zip

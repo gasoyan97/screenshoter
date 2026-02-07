@@ -37,6 +37,7 @@
 		R3G10N01A2B3C4D5E6F7082 /* RegionCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = R3G10N02B3C4D5E6F708293 /* RegionCaptureView.swift */; };
 		SCR0LL01A2B3C4D5E6F70829 /* ScrollCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SCR0LL02B3C4D5E6F7082930 /* ScrollCaptureService.swift */; };
 		SCR3C01A2B3C4D5E6F70829 /* ScreenRecordingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SCR3C02B3C4D5E6F7082930 /* ScreenRecordingService.swift */; };
+		SPKDLG01A2B3C4D5E6F70829 /* SparkleUpdaterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = SPKDLG02B3C4D5E6F7082930 /* SparkleUpdaterDelegate.swift */; };
 		SPKUP01A2B3C4D5E6F70829 /* SparkleUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */; };
 		W4LL01A2B3C4D5E6F708293 /* WallpaperPresetHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */; };
 		WNDCK01A2B3C4D5E6F70829 /* WindowDockHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = WNDCK02B3C4D5E6F7082930 /* WindowDockHelper.swift */; };
@@ -81,6 +82,7 @@
 		R3G10N02B3C4D5E6F708293 /* RegionCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionCaptureView.swift; sourceTree = "<group>"; };
 		SCR0LL02B3C4D5E6F7082930 /* ScrollCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollCaptureService.swift; sourceTree = "<group>"; };
 		SCR3C02B3C4D5E6F7082930 /* ScreenRecordingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecordingService.swift; sourceTree = "<group>"; };
+		SPKDLG02B3C4D5E6F7082930 /* SparkleUpdaterDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleUpdaterDelegate.swift; sourceTree = "<group>"; };
 		SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleUpdater.swift; sourceTree = "<group>"; };
 		W4LL02B3C4D5E6F7082930 /* WallpaperPresetHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperPresetHelper.swift; sourceTree = "<group>"; };
 		WNDCK02B3C4D5E6F7082930 /* WindowDockHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowDockHelper.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				B2C3D4E5F60718293A4B5C6D /* NotificationManager.swift */,
 				4E316430B534C8F89F936DC6 /* ScreenshotService.swift */,
 				25FCCFC09E18428C8671C622 /* ScreenShoterApp.swift */,
+				SPKDLG02B3C4D5E6F7082930 /* SparkleUpdaterDelegate.swift */,
 				SPKUP02B3C4D5E6F7082930 /* SparkleUpdater.swift */,
 				C3D4E5F60718293A4B5C6D7E /* SetupView.swift */,
 				4D87AEEB04C78E7F690FAE68 /* SettingsView.swift */,
@@ -298,6 +301,7 @@
 				Y4ND3X01A2B3C4D5E6F7082A /* YandexOAuthConfig.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F7082B /* YandexOAuthCallbackServer.swift in Sources */,
 				Y4ND3X01A2B3C4D5E6F7082C /* YandexOAuthSecrets.generated.swift in Sources */,
+				SPKDLG01A2B3C4D5E6F70829 /* SparkleUpdaterDelegate.swift in Sources */,
 				SPKUP01A2B3C4D5E6F70829 /* SparkleUpdater.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

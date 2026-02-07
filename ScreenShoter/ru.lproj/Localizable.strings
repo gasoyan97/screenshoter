@@ -155,6 +155,11 @@
 "annotation.text_not_recognized" = "Текст не распознан";
 "annotation.ocr_failed" = "Не удалось распознать текст на изображении.";
 "annotation.error" = "Ошибка";
+"annotation.text_placeholder" = "Текст";
+"annotation.undo" = "Отменить";
+"annotation.redo" = "Повторить";
+"annotation.delete" = "Удалить";
+"annotation.blur_hint" = "Потяните по изображению, чтобы выделить область для размытия";
 
 /* Quick overlay */
 "overlay.save" = "Сохранить";

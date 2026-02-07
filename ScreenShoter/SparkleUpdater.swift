@@ -3,11 +3,14 @@ import Sparkle
 
 /// Общий контроллер Sparkle — должен жить всё время работы приложения,
 /// иначе checkForUpdates прерывается при деаллокации.
+@MainActor
 enum SparkleUpdater {
+    private static let updaterDelegate = SparkleUpdaterDelegate()
+
     static let controller: SPUStandardUpdaterController = {
         SPUStandardUpdaterController(
             startingUpdater: true,
-            updaterDelegate: nil,
+            updaterDelegate: updaterDelegate,
             userDriverDelegate: nil
         )
     }()

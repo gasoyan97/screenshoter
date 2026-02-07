@@ -23,6 +23,11 @@
 
 Swift · SwiftUI · WebDAV · Sparkle
 
+## FAQ
+
+**После обновления снова просят разрешения (Запись экрана)?**  
+macOS привязывает разрешения к подписи приложения. Сборка без Developer ID создаёт новую «личность» при каждой версии. Подробнее: [docs/TROUBLESHOOTING_PERMISSIONS.md](docs/TROUBLESHOOTING_PERMISSIONS.md)
+
 ## Разработка
 
 Для работы загрузки в Яндекс.Диск нужны OAuth credentials. Локально: скопируйте `ScreenShoter/Secrets.xcconfig.example` в `ScreenShoter/Secrets.xcconfig` и заполните Client ID/Secret. Подробнее: [docs/OAUTH_SETUP.md](docs/OAUTH_SETUP.md)

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>ScreenShoter</title>
+        <description>Обновление на новый репозиторий (screenshoter). Дальнейшие обновления — с gasoyan97.github.io/screenshoter</description>
+        <item>
+            <title>0.0.9 — переход на новый репозиторий</title>
+            <pubDate>Sat, 07 Feb 2026 20:00:00 +0000</pubDate>
+            <sparkle:version>009</sparkle:version>
+            <sparkle:shortVersionString>0.0.9</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/gasoyan97/screenshoter/releases/download/v0.0.9/ScreenShoter-0.0.9.zip"
+                length="2251969"
+                type="application/octet-stream"
+                sparkle:edSignature="diwnzrgKbe13e0lkbNYSTG1Lw3AXzD3SNAWNIZpgoY/E+aqiI9xnJqMogOFm6nBQ2aUlgn6c7e9OyMb/2RbmAg==" />
+        </item>
+    </channel>
+</rss>

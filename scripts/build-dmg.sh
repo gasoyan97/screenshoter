@@ -32,6 +32,7 @@ rm -rf dmg_root
 mkdir -p dmg_root
 cp -R build/export/ScreenShoter.app dmg_root/
 ln -s /Applications dmg_root/Applications
+cp assets/installer-readme.txt "dmg_root/Прочитайте меня.txt"
 hdiutil create -volname "ScreenShoter $VERSION" -srcfolder dmg_root -ov -format UDZO "$DMG_NAME"
 rm -rf dmg_root
 

@@ -115,6 +115,7 @@ struct LauncherMenuView: View {
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .onAppear {
+            _ = SparkleUpdater.controller
             if !hasCheckedSetup {
                 hasCheckedSetup = true
                 openWindow(id: "setup")
