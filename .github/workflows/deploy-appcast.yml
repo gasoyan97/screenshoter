@@ -1,0 +1,46 @@
+# Деплой минимального appcast на GitHub Pages.
+# Обеспечивает, что SUFeedURL всегда доступен — иначе Sparkle показывает
+# "An error occurred in retrieving update information".
+#
+# Запускается при push в main. Release workflow (при публикации релиза)
+# перезапишет appcast.xml полной версией.
+
+name: Deploy appcast
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Minimal appcast
+        run: |
+          mkdir -p pages
+          printf '%s\n' \
+            '<?xml version="1.0" encoding="utf-8"?>' \
+            '<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">' \
+            '<channel>' \
+            '<title>ScreenShoter</title>' \
+            '<description>Обновления ScreenShoter</description>' \
+            '</channel>' \
+            '</rss>' > pages/appcast.xml
+          cat pages/appcast.xml
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
