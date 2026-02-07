@@ -38,11 +38,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Auth gh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$GITHUB_TOKEN" | gh auth login --with-token
+
       - name: Download release assets
         run: |
           TAG="${{ github.event_name == 'workflow_dispatch' && github.event.inputs.tag || github.event.release.tag_name }}"
           echo "Using tag: $TAG"
-          gh release download "$TAG" -D updates -A '*.zip' -A '*.dmg' -A '*.tar.xz' || true
+          gh release download "$TAG" -D updates -A '*.zip' -A '*.dmg' -A '*.tar.xz' || { echo "::error::Failed to download assets for $TAG"; exit 1; }
           echo "tag=$TAG" >> $GITHUB_ENV
           ls -la updates/
 
@@ -63,7 +68,7 @@ jobs:
             echo "::warning::SPARKLE_PRIVATE_KEY not set. Add it as repo secret for signed appcast."
             echo "<?xml version=\"1.0\" encoding=\"utf-8\"?><rss version=\"2.0\" xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\"><channel><title>ScreenShoter</title><description>Updates</description></channel></rss>" > pages/appcast.xml
           else
-            echo "$SPARKLE_PRIVATE_KEY" | base64 -d > private_key.pem
+            echo "$SPARKLE_PRIVATE_KEY" | tr -d '\n' | base64 -d > private_key.pem
             chmod 600 private_key.pem
             ./Sparkle/bin/generate_appcast -s private_key.pem --link "$BASE_URL/" updates/ || \
             ./Sparkle/bin/generate_appcast -s private_key.pem --no-deltas --link "$BASE_URL/" updates/ || \
