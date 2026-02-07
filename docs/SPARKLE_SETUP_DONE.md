@@ -28,13 +28,21 @@ gh secret set SPARKLE_PRIVATE_KEY < .sparkle-secrets/SPARKLE_PRIVATE_KEY_BASE64.
 1. https://github.com/gasoyan97/screnshoter/settings/pages
 2. Source: **GitHub Actions**
 
-### 3. Первый релиз
+### 3. Первый релиз (DMG)
 
-1. Соберите приложение (Product → Archive)
-2. Экспортируйте .app, упакуйте: `ditto -c -k --sequesterRsrc --keepParent ScreenShoter.app ScreenShoter-0.0.1.zip`
-3. Нотаризуйте
-4. Создайте Release на GitHub, загрузите .zip
-5. Workflow сгенерирует appcast и задеплоит на Pages
+**Через тег (автоматически):**
+```bash
+git tag v0.0.2
+git push origin v0.0.2
+```
+Workflow Build DMG соберёт, подпишет, нотаризует и создаст Release. Затем Release workflow сгенерирует appcast.
+
+**Локально:**
+```bash
+./scripts/build-dmg.sh 0.0.2
+# Нотаризовать, затем загрузить DMG и ZIP в Release
+```
+См. [docs/BUILD_DMG.md](BUILD_DMG.md)
 
 ## Важно
 

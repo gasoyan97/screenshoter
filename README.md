@@ -2,6 +2,8 @@
 
 Нативное приложение для macOS (Apple Silicon) на Swift/SwiftUI: скриншоты из меню-бара, аннотации и загрузка в облако по WebDAV (Nextcloud, Яндекс.Диск по WebDAV и т.п.).
 
+**[Скачать последнюю версию](https://github.com/gasoyan97/screnshoter/releases/latest)** (DMG)
+
 ## Требования
 
 - macOS 14+

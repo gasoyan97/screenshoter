@@ -4,6 +4,11 @@
 .sparkle-secrets/
 .sparkle-tools/
 
+# Build artifacts
+*.dmg
+*.zip
+!docs/*.zip
+
 # Xcode
 xcuserdata/
 *.xcuserstate
