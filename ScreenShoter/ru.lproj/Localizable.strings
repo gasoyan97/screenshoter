@@ -188,6 +188,12 @@
 /* WebDAV errors */
 "error.invalid_url" = "Неверный или неподдерживаемый адрес. Проверьте URL в настройках (должен начинаться с https://).";
 "error.save_failed" = "Ошибка сохранения";
+"error.no_oauth_token" = "Укажите OAuth-токен в настройках (Яндекс.Диск).";
+"error.yandex_missing_credentials" = "Укажите Client ID и Client secret в YandexOAuthConfig и пересоберите приложение.";
+
+/* Recording errors */
+"recording.no_screen_access" = "Нет доступа к экрану. Включите «Запись экрана» в Системных настройках → Конфиденциальность и безопасность.";
+"recording.no_display" = "Дисплей не найден.";
 
 /* Stubs (feature in development) */
 "stub.ok" = "OK";

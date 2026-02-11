@@ -20,7 +20,11 @@ enum YandexOAuthConfig {
         let clientID = builtInClientID.trimmingCharacters(in: .whitespacesAndNewlines)
         let clientSecret = builtInClientSecret.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !clientID.isEmpty, !clientSecret.isEmpty else {
-            throw NSError(domain: "YandexOAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: "Укажите Client ID и Client secret в YandexOAuthConfig."])
+            throw NSError(
+                domain: "YandexOAuth",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: String(localized: "error.yandex_missing_credentials")]
+            )
         }
         guard let url = URL(string: "https://oauth.yandex.ru/token") else {
             throw NSError(domain: "YandexOAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: "Неверный URL."])

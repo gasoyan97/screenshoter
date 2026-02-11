@@ -45,7 +45,11 @@ final class WebDAVUploader {
     func upload(fileURL: URL) async throws -> WebDAVUploadResult {
         let token = AppSettings.yandexOAuthToken.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !token.isEmpty else {
-            throw NSError(domain: "WebDAVUpload", code: -1, userInfo: [NSLocalizedDescriptionKey: "Укажите OAuth-токен в настройках (Яндекс.Диск)."])
+            throw NSError(
+                domain: "WebDAVUpload",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: String(localized: "error.no_oauth_token")]
+            )
         }
         return try await uploadViaYandexREST(fileURL: fileURL, oauthToken: token)
     }
@@ -221,7 +225,11 @@ final class WebDAVUploader {
     func testYandexRESTConnection(oauthToken: String? = nil) async throws {
         let token = (oauthToken ?? AppSettings.yandexOAuthToken).trimmingCharacters(in: .whitespacesAndNewlines)
         guard !token.isEmpty else {
-            throw NSError(domain: "WebDAVUpload", code: -1, userInfo: [NSLocalizedDescriptionKey: "Укажите OAuth-токен."])
+            throw NSError(
+                domain: "WebDAVUpload",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: String(localized: "error.no_oauth_token")]
+            )
         }
         try await ensureRemoteFolderExists(oauthToken: token)
         let testPath = "/\(Self.remoteFolderName)/.connection_check"

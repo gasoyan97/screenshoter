@@ -188,6 +188,12 @@
 /* WebDAV errors */
 "error.invalid_url" = "Invalid or unsupported URL. Check URL in settings (must start with https://).";
 "error.save_failed" = "Save failed";
+"error.no_oauth_token" = "Specify OAuth token in Settings → Yandex.Disk.";
+"error.yandex_missing_credentials" = "Specify Client ID and Client secret in YandexOAuthConfig and rebuild the app.";
+
+/* Recording errors */
+"recording.no_screen_access" = "No access to screen recording. Enable Screen Recording in System Settings → Privacy & Security.";
+"recording.no_display" = "Display not found.";
 
 /* Stubs (feature in development) */
 "stub.ok" = "OK";

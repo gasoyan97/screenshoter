@@ -66,12 +66,12 @@ final class ScreenRecordingService: NSObject, ObservableObject {
                 }
             }
         } catch {
-            errorMessage = "Нет доступа к экрану. Включите «Запись экрана» в Системных настройках → Конфиденциальность и безопасность."
+            errorMessage = String(localized: "recording.no_screen_access")
             throw error
         }
 
         guard let display = content.displays.first else {
-            errorMessage = "Дисплей не найден"
+            errorMessage = String(localized: "recording.no_display")
             throw ScreenRecordingError.noDisplay
         }
 

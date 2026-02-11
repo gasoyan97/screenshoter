@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import ApplicationServices
 
 /// Глобальные шорткаты: скриншот с редактированием / без (сохранение + облако).
 /// Требуется разрешение «Универсальный доступ» (Accessibility).
@@ -7,6 +8,7 @@ final class HotkeyManager {
     static let shared = HotkeyManager()
 
     private var globalMonitor: Any?
+    private var localMonitor: Any?
     private var withEditingHandler: (() -> Void)?
     private var withoutEditingHandler: (() -> Void)?
     private var recordingHandler: (() -> Void)?
@@ -23,8 +25,13 @@ final class HotkeyManager {
     func start() {
         guard !isStarted else { return }
         isStarted = true
+        requestAccessibilityIfNeeded()
         globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
             self?.handleKeyDown(event)
+        }
+        localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            self?.handleKeyDown(event)
+            return event
         }
     }
 
@@ -33,7 +40,23 @@ final class HotkeyManager {
             NSEvent.removeMonitor(m)
             globalMonitor = nil
         }
+        if let m = localMonitor {
+            NSEvent.removeMonitor(m)
+            localMonitor = nil
+        }
         isStarted = false
+    }
+
+    /// Проверяет, выдано ли приложению право «Универсальный доступ».
+    /// Если нет — показывает системный диалог с запросом доступа и открывает соответствующий раздел настроек.
+    private func requestAccessibilityIfNeeded() {
+        if AXIsProcessTrusted() {
+            return
+        }
+        let options = [
+            kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true as CFBoolean
+        ] as CFDictionary
+        _ = AXIsProcessTrustedWithOptions(options)
     }
 
     private func handleKeyDown(_ event: NSEvent) {
